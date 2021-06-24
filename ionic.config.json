@@ -1,5 +1,7 @@
 {
   "name": "trading-tracker",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
