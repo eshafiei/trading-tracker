@@ -14,8 +14,7 @@ export class EditSectorPage implements OnInit {
   sector: Sector;
   assetTypes: typeof AssetType = AssetType;
   assetTypeItems: string[] = [];
-  //assetTypeKeys: string[];
-  //selectedType: any;
+  selectedType: any;
 
   constructor(private route: ActivatedRoute, private navCtrl: NavController, private sectorService: SectorsService) { }
 
@@ -27,14 +26,15 @@ export class EditSectorPage implements OnInit {
       }
       this.sector = this.sectorService.getSector(Number(paramMap.get('id')));
       this.assetTypeItems = Object.keys(this.assetTypes).filter(k => !isNaN(Number(k)));
-      console.log(this.sector);
     });
   }
 
-  //  (ionChange)="assetTypeChange($event)"
-  // assetTypeChange(event: any) {
-  //   this.selectedType = this.assetTypes[event.detail.value];
-  //   this.sector.type = this.selectedType;
-  //   console.log(this.sector);
-  // }
+  assetTypeChange(event: any) {
+    this.selectedType = this.assetTypes[event.detail.value];
+    this.sector.type = this.selectedType;
+  }
+
+  save() {
+    this.sectorService.saveSector(this.sector);
+  }
 }
