@@ -15,15 +15,21 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-label position="floating">Sector</ion-label>
-    <ion-input type="text" [(ngModel)]="sector.name"></ion-input>
-    <ion-toggle color="success" [(ngModel)]="sector.active" slot="end"></ion-toggle>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Type</ion-label>
-    <ion-select placeholder="Select One" selectedText="{{assetTypes[sector.type]}}" (ionChange)="assetTypeChange($event)">
-      <ion-select-option *ngFor="let type of assetTypeItems">{{assetTypes[type]}}</ion-select-option>
-    </ion-select>
-  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="4" offset-md="4">
+        <ion-item>
+          <ion-label position="floating">Sector</ion-label>
+          <ion-input type="text" [(ngModel)]="sector.name"></ion-input>
+          <ion-toggle color="success" [(ngModel)]="sector.active" slot="end"></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Type</ion-label>
+          <ion-select placeholder="Select One" selectedText="{{assetTypes[sector.type]}}" (ionChange)="assetTypeChange($event)">
+            <ion-select-option *ngFor="let type of assetTypeItems">{{assetTypes[type]}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
