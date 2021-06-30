@@ -20,18 +20,18 @@ export class EditSectorPage implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
-      if(!paramMap.has('id')) {
+      if(!paramMap.has('sectorId')) {
         this.navCtrl.navigateBack('/sectors');
         return;
       }
-      this.sector = this.sectorService.getSector(Number(paramMap.get('id')));
+      this.sector = this.sectorService.getSector(Number(paramMap.get('sectorId')));
       this.assetTypeItems = Object.keys(this.assetTypes).filter(k => !isNaN(Number(k)));
     });
   }
 
   assetTypeChange(event: any) {
     this.selectedType = this.assetTypes[event.detail.value];
-    this.sector.type = this.selectedType;
+    this.sector.sectorType = this.selectedType;
   }
 
   save() {

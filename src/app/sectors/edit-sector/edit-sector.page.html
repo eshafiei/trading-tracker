@@ -20,12 +20,12 @@
       <ion-col size-md="4" offset-md="4">
         <ion-item>
           <ion-label position="floating">Sector</ion-label>
-          <ion-input type="text" [(ngModel)]="sector.name"></ion-input>
+          <ion-input type="text" [(ngModel)]="sector.sectorName"></ion-input>
           <ion-toggle color="success" [(ngModel)]="sector.active" slot="end"></ion-toggle>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Type</ion-label>
-          <ion-select placeholder="Select One" selectedText="{{assetTypes[sector.type]}}" (ionChange)="assetTypeChange($event)">
+          <ion-select placeholder="Select One" selectedText="{{assetTypes[sector.sectorType]}}" (ionChange)="assetTypeChange($event)">
             <ion-select-option *ngFor="let type of assetTypeItems">{{assetTypes[type]}}</ion-select-option>
           </ion-select>
         </ion-item>

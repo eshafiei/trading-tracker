@@ -1,6 +1,10 @@
+export interface Sectors {
+  sectors: Array<Sector>;
+}
+
 export interface Sector {
-  id: number;
-  name: string;
-  type: number;
+  sectorId: number;
+  sectorName: string;
+  sectorType: number;
   active: boolean;
 }

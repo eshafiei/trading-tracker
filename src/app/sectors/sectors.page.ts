@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Sector } from './models/sector.model';
+import { Sector, Sectors } from './models/sector.model';
 import { SectorsService } from './sectors.service';
 
 @Component({
@@ -13,7 +13,12 @@ export class SectorsPage implements OnInit {
   constructor(private sectorService: SectorsService, private alertController: AlertController) { }
 
   ngOnInit() {
-    this.sectors = this.sectorService.sectors();
+    this.sectorService.sectors().subscribe(
+        (res: Sectors ) => {
+          this.sectors = res.sectors;
+        },
+        err => { console.log('Error occurred: ' + err.message); }
+      );
   }
 
   async deleteSector(sectorId: number) {
