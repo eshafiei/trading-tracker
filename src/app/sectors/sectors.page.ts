@@ -14,14 +14,12 @@ export class SectorsPage implements OnInit {
 
   ngOnInit() {
     this.sectorService.sectors().subscribe(
-        (res: Sectors ) => {
-          this.sectors = res.sectors;
-        },
-        err => { console.log('Error occurred: ' + err.message); }
+        (res: Sectors) => this.sectors = res.sectors,
+        err => console.log('Error occurred: ' + err.message)
       );
   }
 
-  async deleteSector(sectorId: number) {
+  async deleteSector(sectorId: string) {
     this.alertController.create({
       header: 'Delete Confirmation',
       message: 'Are you sure you want to delete this sector?',

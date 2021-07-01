@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { IonSelect, NavController } from '@ionic/angular';
 import { AssetType } from '../models/asset-type.enum';
 import { Sector } from '../models/sector.model';
 import { SectorsService } from '../sectors.service';
@@ -11,12 +12,21 @@ import { SectorsService } from '../sectors.service';
   styleUrls: ['./edit-sector.page.scss'],
 })
 export class EditSectorPage implements OnInit {
-  sector: Sector;
+  public sectorForm: FormGroup;
   assetTypes: typeof AssetType = AssetType;
   assetTypeItems: string[] = [];
-  selectedType: any;
 
-  constructor(private route: ActivatedRoute, private navCtrl: NavController, private sectorService: SectorsService) { }
+  constructor(private route: ActivatedRoute,
+    private navCtrl: NavController,
+    private sectorService: SectorsService,
+    private fb: FormBuilder) {
+      this.sectorForm = this.fb.group({
+        sectorId: [''],
+        sectorName: ['test', Validators.required],
+        sectorType: [0, [Validators.required]],
+        active: [false, [Validators.required]]
+      });
+    }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -24,17 +34,32 @@ export class EditSectorPage implements OnInit {
         this.navCtrl.navigateBack('/sectors');
         return;
       }
-      this.sector = this.sectorService.getSector(Number(paramMap.get('sectorId')));
+      this.sectorService.getSector(paramMap.get('sectorId')).subscribe(
+          (res: Sector) => {
+            this.sectorForm.setValue({
+              sectorId: res.sectorId,
+              sectorName: res.sectorName,
+              sectorType: res.sectorType,
+              active: res.active
+            });
+          },
+          err => console.log('Error occurred: ' + err.message)
+      );
       this.assetTypeItems = Object.keys(this.assetTypes).filter(k => !isNaN(Number(k)));
     });
+    console.log(this.f.sectorType.value);
   }
 
-  assetTypeChange(event: any) {
-    this.selectedType = this.assetTypes[event.detail.value];
-    this.sector.sectorType = this.selectedType;
+  get f() {
+    return this.sectorForm.controls;
+  }
+
+  sectorTypeChange(event: any, element: IonSelect) {
+    element.value = event.detail.value;
+    element.selectedText = this.assetTypes[event.detail.value];
   }
 
   save() {
-    this.sectorService.saveSector(this.sector);
+    this.sectorService.saveSector(this.sectorForm.value);
   }
 }

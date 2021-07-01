@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('./new-sector/new-sector.module').then( m => m.NewSectorPageModule)
   },
   {
-    path: 'edit-sector/:id',
+    path: 'edit-sector/:sectorId',
     loadChildren: () => import('./edit-sector/edit-sector.module').then( m => m.EditSectorPageModule)
   }
 ];

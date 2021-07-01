@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Sector } from './models/sector.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import { Sector } from './models/sector.model';
 export class SectorsService {
 
   getSectorsUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sectors';
+  getSectorUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sector';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   sectorsList: any = {};
@@ -19,8 +21,9 @@ export class SectorsService {
     return this.http.get(this.getSectorsUrl);
   }
 
-  getSector(id: number): Sector {
-    return {...this.sectorsList.find(p => p.id === id)};
+  getSector(sectorId: string): Observable<any> {
+    const params = new HttpParams().set('sectorId', sectorId);
+    return this.http.get(this.getSectorUrl, {params});
   }
 
   saveSector(sector: Sector) {

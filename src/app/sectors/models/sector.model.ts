@@ -3,7 +3,7 @@ export interface Sectors {
 }
 
 export interface Sector {
-  sectorId: number;
+  sectorId: string;
   sectorName: string;
   sectorType: number;
   active: boolean;
