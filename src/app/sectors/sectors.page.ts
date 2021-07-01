@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { LoaderService } from '../services/loader.service';
+import { ToastService } from '../services/toast.service';
 import { Sector, Sectors } from './models/sector.model';
 import { SectorsService } from './sectors.service';
 
@@ -15,7 +16,8 @@ export class SectorsPage implements OnInit {
   constructor(private sectorService: SectorsService,
     private alertController: AlertController,
     private ionLoader: LoaderService,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private toastService: ToastService) { }
 
   ngOnInit() {
     this.ionLoader.showLoader();
@@ -29,7 +31,7 @@ export class SectorsPage implements OnInit {
       );
   }
 
-  async deleteSector(sectorId: string) {
+  async deleteSector(sector: Sector) {
     this.alertController.create({
       header: 'Delete Confirmation',
       message: 'Are you sure you want to delete this sector?',
@@ -37,9 +39,11 @@ export class SectorsPage implements OnInit {
         { text: 'Cancel', role: 'cancel'},
         { text: 'Delete',
           handler: () => {
-            this.sectorService.deleteSector(sectorId).subscribe(
-              res => {
-                this.sectors = this.sectors.filter(s => s.sectorId !== sectorId);
+            this.sectorService.deleteSector(sector.sectorId).subscribe(
+              () => {
+                this.sectors = this.sectors.filter(s => s.sectorId !== sector.sectorId);
+                this.toastService.presentToastWithOptions('Removal Notification', `Sector: ${sector.sectorName} deleted!`, 3000,
+                false, true);
                 this.ref.detectChanges();
               },
               err => console.log(err)

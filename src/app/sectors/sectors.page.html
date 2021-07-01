@@ -17,7 +17,7 @@
             <ion-icon name="file-tray-full-outline"></ion-icon>
             <ion-label class="ion-margin" [routerLink]="['/', 'sectors', 'edit-sector', sector.sectorId]">{{ sector.sectorName }}</ion-label>
             <ion-buttons>
-              <ion-button (click)="deleteSector(sector.sectorId)">
+              <ion-button (click)="deleteSector(sector)">
                 <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-buttons>
