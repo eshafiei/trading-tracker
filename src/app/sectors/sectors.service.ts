@@ -8,25 +8,29 @@ import { Observable } from 'rxjs';
 })
 export class SectorsService {
 
-  getSectorsUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sectors';
-  getSectorUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sector';
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-  sectorsList: any = {};
+  sectorsUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sectors';
+  sectorUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sector';
+  //headers = new HttpHeaders().set('Content-Type', 'application/json');
+  body: any;
 
   constructor(private http: HttpClient) {
   }
 
   sectors() {
-    return this.http.get(this.getSectorsUrl);
+    return this.http.get(this.sectorsUrl);
   }
 
   getSector(sectorId: string): Observable<any> {
     const params = new HttpParams().set('sectorId', sectorId);
-    return this.http.get(this.getSectorUrl, {params});
+    return this.http.get(this.sectorUrl, {params});
   }
 
   saveSector(sector: Sector) {
     console.log('from service: ', sector);
+  }
+
+  deleteSector(sectorId: string) {
+    this.body = {body: {sectorId}};
+    return this.http.delete(this.sectorUrl, this.body);
   }
 }

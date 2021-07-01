@@ -22,7 +22,6 @@
             <ion-item>
               <ion-label position="floating">Sector</ion-label>
               <ion-input type="text" formControlName="sectorName"></ion-input>
-              <ion-toggle color="success" slot="end" formControlName="active"></ion-toggle>
             </ion-item>
             <ion-item>
               <ion-label position="floating">Type</ion-label>
@@ -31,6 +30,14 @@
                 value="f.sectorType.value">
                 <ion-select-option *ngFor="let type of assetTypeItems" [value]="type">{{assetTypes[type]}}</ion-select-option>
               </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="2" offset-md="4">
+            <ion-item>
+              <ion-label>Active</ion-label>
+              <ion-toggle color="success" formControlName="active"></ion-toggle>
             </ion-item>
           </ion-col>
         </ion-row>

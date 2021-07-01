@@ -7,10 +7,22 @@ const dynamodbTableName = 'sector';
 const healthPath = '/health';
 const sectorPath = '/sector';
 const sectorsPath = '/sectors';
+let origin = 'http://localhost:8100';
 
 exports.handler = async (event) => {
   console.log('Request event: ', event);
   let response;
+
+  if (event.headers !== null && event.headers !== undefined && event.headers['origin'] !== undefined) {
+
+          console.log("Received origin header: " + event.headers.origin);
+
+          if(event.headers.origin === 'http://trading-tracker.s3-website-us-east-1.amazonaws.com') {
+              origin = event.headers.origin;
+          }
+  } else {
+      console.error('No origin header received');
+  }
 
   switch (true) {
     case event.httpMethod === 'GET' && event.path === healthPath:
@@ -29,7 +41,7 @@ exports.handler = async (event) => {
       const requestBody = JSON.parse(event.body);
       response = await updateSector(requestBody.sectorId, requestBody.updateKey, requestBody.updateValue);
       break;
-    case event.httpMethod === 'DELETE' && event.path === sectorPath:
+    case event.httpMethod === 'DELETE' && event.path === sectorsPath:
       response = await deleteSector(JSON.parse(event.body).sectorId);
       break;
   }
@@ -57,7 +69,7 @@ async function getSectors() {
   };
   const allSectors = await scanDynamoRecords(params, []);
   const body = {
-    Sectors: allSectors
+    sectors: allSectors
   };
   return buildResponse(200, body);
 }
@@ -141,7 +153,10 @@ function buildResponse(statusCode, body) {
   return {
     statusCode: statusCode,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+      'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT,PATCH,OPTIONS'
     },
     body: JSON.stringify(body)
   };

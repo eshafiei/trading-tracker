@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IonSelect, NavController } from '@ionic/angular';
+import { LoaderService } from 'src/app/services/loader.service';
 import { AssetType } from '../models/asset-type.enum';
 import { Sector } from '../models/sector.model';
 import { SectorsService } from '../sectors.service';
@@ -18,6 +19,7 @@ export class EditSectorPage implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private navCtrl: NavController,
+    private ionLoader: LoaderService,
     private sectorService: SectorsService,
     private fb: FormBuilder) {
       this.sectorForm = this.fb.group({
@@ -29,6 +31,7 @@ export class EditSectorPage implements OnInit {
     }
 
   ngOnInit() {
+    this.ionLoader.showLoader();
     this.route.paramMap.subscribe(paramMap => {
       if(!paramMap.has('sectorId')) {
         this.navCtrl.navigateBack('/sectors');
@@ -43,11 +46,11 @@ export class EditSectorPage implements OnInit {
               active: res.active
             });
           },
-          err => console.log('Error occurred: ' + err.message)
+          err => console.log('Error occurred: ' + err.message),
+          () => this.ionLoader.hideLoader()
       );
       this.assetTypeItems = Object.keys(this.assetTypes).filter(k => !isNaN(Number(k)));
     });
-    console.log(this.f.sectorType.value);
   }
 
   get f() {
