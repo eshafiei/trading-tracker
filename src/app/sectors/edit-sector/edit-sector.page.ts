@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IonSelect, NavController } from '@ionic/angular';
 import { LoaderService } from 'src/app/services/loader.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { AssetType } from '../models/asset-type.enum';
 import { Sector } from '../models/sector.model';
 import { SectorsService } from '../sectors.service';
@@ -20,6 +21,7 @@ export class EditSectorPage implements OnInit {
   constructor(private route: ActivatedRoute,
     private navCtrl: NavController,
     private ionLoader: LoaderService,
+    private toastService: ToastService,
     private sectorService: SectorsService,
     private fb: FormBuilder) {
       this.sectorForm = this.fb.group({
@@ -62,7 +64,13 @@ export class EditSectorPage implements OnInit {
     element.selectedText = this.assetTypes[event.detail.value];
   }
 
-  save() {
-    this.sectorService.saveSector(this.sectorForm.value);
+  updateSector() {
+    this.ionLoader.showLoader();
+    this.sectorService.updateSector(this.sectorForm.value).subscribe(
+      () => this.toastService.presentToastWithOptions('Update Confirmation', `${this.sectorForm.value?.sectorName} updated successfully!`,
+        3000, false, true),
+      err => console.log(err),
+      () => this.ionLoader.hideLoader()
+    );
   }
 }

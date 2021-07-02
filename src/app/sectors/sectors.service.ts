@@ -11,7 +11,7 @@ export class SectorsService {
   sectorsUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sectors';
   sectorUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sector';
   //headers = new HttpHeaders().set('Content-Type', 'application/json');
-  body: any;
+  payload: any;
 
   constructor(private http: HttpClient) {
   }
@@ -30,7 +30,17 @@ export class SectorsService {
   }
 
   deleteSector(sectorId: string) {
-    this.body = {body: {sectorId}};
-    return this.http.delete(this.sectorUrl, this.body);
+    this.payload = {body: {sectorId}};
+    return this.http.delete(this.sectorUrl, this.payload);
+  }
+
+  updateSector(sector: Sector) {
+    this.payload = {
+      sectorId: sector.sectorId,
+      sectorName: sector.sectorName,
+      sectorType: sector.sectorType,
+      active: sector.active
+    };
+    return this.http.put(this.sectorUrl, this.payload);
   }
 }
