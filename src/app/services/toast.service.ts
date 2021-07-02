@@ -9,7 +9,7 @@ export class ToastService {
   constructor(private toastController: ToastController) { }
 
   async presentToastWithOptions(header: string, message: string, duration: number,
-    shouldUseCustomeCss? : boolean, showCloseButton? : boolean) {
+    showCloseButton? : boolean, shouldUseCustomeCss? : boolean) {
     const toast = await this.toastController.create({
       header,
       message,

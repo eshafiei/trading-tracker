@@ -26,7 +26,13 @@ export class SectorsService {
   }
 
   saveSector(sector: Sector) {
-    console.log('from service: ', sector);
+    this.payload = {
+      sectorId: sector.sectorId,
+      sectorName: sector.sectorName,
+      sectorType: sector.sectorType,
+      active: sector.active
+    };
+    return this.http.post(this.sectorUrl, this.payload);
   }
 
   deleteSector(sectorId: string) {

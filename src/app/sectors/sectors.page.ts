@@ -42,8 +42,8 @@ export class SectorsPage implements OnInit {
             this.sectorService.deleteSector(sector.sectorId).subscribe(
               () => {
                 this.sectors = this.sectors.filter(s => s.sectorId !== sector.sectorId);
-                this.toastService.presentToastWithOptions('Removal Notification', `Sector: ${sector.sectorName} deleted!`, 3000,
-                false, true);
+                this.toastService.presentToastWithOptions('REMOVAL NOTIFICATION', `${sector.sectorName} has been deleted!`,
+                  3000, true);
                 this.ref.detectChanges();
               },
               err => console.log(err)
