@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -16,11 +16,12 @@ export class EditSectorComponent implements OnInit {
   isEdit: boolean;
 
   constructor(
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private navCtrl: NavController,
     private ionLoader: LoaderService,
     private toastService: ToastService,
-    private sectorService: SectorsService
+    private sectorService: SectorsService,
+    private route: Router
   ){}
 
   ngOnInit() {
@@ -29,32 +30,39 @@ export class EditSectorComponent implements OnInit {
   }
 
   loadData() {
-    this.ionLoader.showLoader();
-    this.route.paramMap.subscribe(paramMap => {
+    let sectorId: string;
+    this.activatedRoute.paramMap.subscribe(paramMap => {
       if(!paramMap.has('sectorId')) {
         this.navCtrl.navigateBack('/sectors');
         return;
       }
-      this.sectorService.getSector(paramMap.get('sectorId')).subscribe(
-        (res: Sector) => {
+      sectorId = paramMap.get('sectorId');
+    });
+    if (sectorId) {
+      this.ionLoader.showLoader();
+      this.sectorService.getSector(sectorId).subscribe(
+        (res: Sector) =>
           this.sectorData = {
             sectorId: res.sectorId,
             sectorName: res.sectorName,
             sectorType: res.sectorType,
             active: res.active
-          };
-        },
+          },
         err => console.log('Error occurred: ' + err.message),
         () => this.ionLoader.hideLoader()
       );
-    });
+    }
   }
 
   updateSector(sectorItem: Sector) {
     this.ionLoader.showLoader();
     this.sectorService.updateSector(sectorItem).subscribe(
-      () => this.toastService.presentToastWithOptions('UPDATE CONFIRMATION',
-              `${sectorItem?.sectorName} updated successfully!`, 3000, true),
+      () => {
+        this.toastService.presentToastWithOptions('UPDATE CONFIRMATION',
+              `${sectorItem?.sectorName} updated successfully!`, 2000, true);
+        this.ionLoader.hideLoader();
+        this.route.navigate(['./sectors']);
+      },
       err => console.log(err),
       () => this.ionLoader.hideLoader()
     );
