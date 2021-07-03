@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ViewDidEnter } from '@ionic/angular';
 import { LoaderService } from '../services/loader.service';
 import { ToastService } from '../services/toast.service';
 import { Sector, Sectors } from './models/sector.model';
@@ -11,7 +11,7 @@ import { SectorsService } from './sectors.service';
   templateUrl: './sectors.page.html',
   styleUrls: ['./sectors.page.scss'],
 })
-export class SectorsPage implements OnInit {
+export class SectorsPage implements OnInit, ViewDidEnter {
   sectors: Sector[];
   constructor(private sectorService: SectorsService,
     private alertController: AlertController,
@@ -29,6 +29,10 @@ export class SectorsPage implements OnInit {
         err => console.log('Error occurred: ' + err.message),
         () => this.ionLoader.hideLoader()
       );
+  }
+
+  ionViewDidEnter(): void {
+    this.ref.detectChanges();
   }
 
   async deleteSector(sector: Sector) {

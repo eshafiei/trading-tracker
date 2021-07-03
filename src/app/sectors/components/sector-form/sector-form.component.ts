@@ -22,7 +22,7 @@ export class SectorFormComponent implements OnInit, OnChanges {
         sectorId: [''],
         sectorName: ['', Validators.required],
         sectorType: [0, [Validators.required]],
-        active: [false, [Validators.required]]
+        active: [true, [Validators.required]]
       });
     }
 
@@ -47,9 +47,6 @@ export class SectorFormComponent implements OnInit, OnChanges {
   }
 
   submit() {
-    if(!this.isEdit) {
-      this.sectorForm.patchValue({sectorId: '12'});
-    }
     this.itemEvent.emit(this.sectorForm.value);
   }
 
