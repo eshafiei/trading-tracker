@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { LoaderService } from 'src/app/services/loader.service';
-import { ToastService } from 'src/app/services/toast.service';
+import { LoaderService } from '../../../services/loader.service';
+import { ToastService } from '../../../services/toast.service';
 import { Sector } from '../../models/sector.model';
 import { SectorsService } from '../../sectors.service';
 import { UUID } from 'angular2-uuid';
 import { Router } from '@angular/router';
+import { MessageService } from '../../../services/message.service';
 
 @Component({
   selector: 'app-new-sector',
@@ -19,6 +20,7 @@ export class NewSectorComponent implements OnInit {
   constructor(private ionLoader: LoaderService,
     private toastService: ToastService,
     private sectorService: SectorsService,
+    private messageService: MessageService,
     private route: Router) {}
 
   ngOnInit() {
@@ -32,6 +34,7 @@ export class NewSectorComponent implements OnInit {
       () => {
         this.toastService.presentToastWithOptions('SAVE CONFIRMATION',
               `${sectorItem?.sectorName} created successfully!`, 3000, true);
+        this.messageService.sendMessage('reload');
         this.route.navigate(['./sectors']);
       },
       err => console.log(err),

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { LoaderService } from 'src/app/services/loader.service';
-import { ToastService } from 'src/app/services/toast.service';
+import { LoaderService } from '../../../services/loader.service';
+import { MessageService } from '../../../services/message.service';
+import { ToastService } from '../../../services/toast.service';
 import { Sector } from '../../models/sector.model';
 import { SectorsService } from '../../sectors.service';
 
@@ -21,7 +22,8 @@ export class EditSectorComponent implements OnInit {
     private ionLoader: LoaderService,
     private toastService: ToastService,
     private sectorService: SectorsService,
-    private route: Router
+    private route: Router,
+    private messageService: MessageService
   ){}
 
   ngOnInit() {
@@ -60,6 +62,7 @@ export class EditSectorComponent implements OnInit {
       () => {
         this.toastService.presentToastWithOptions('UPDATE CONFIRMATION',
               `${sectorItem?.sectorName} updated successfully!`, 2000, true);
+        this.messageService.sendMessage('reload');
         this.ionLoader.hideLoader();
         this.route.navigate(['./sectors']);
       },
