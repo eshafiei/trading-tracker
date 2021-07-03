@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AlertController, ViewDidEnter } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { LoaderService } from '../services/loader.service';
+import { MessageService } from '../services/message.service';
 import { ToastService } from '../services/toast.service';
-import { Sector, Sectors } from './models/sector.model';
+import { Sector } from './models/sector.model';
 import { SectorsService } from './sectors.service';
 
 @Component({
@@ -13,29 +15,40 @@ import { SectorsService } from './sectors.service';
 })
 export class SectorsPage implements OnInit, ViewDidEnter {
   sectors: Sector[];
+  public sectorList: Observable<Sector[]>;
+
   constructor(private sectorService: SectorsService,
     private alertController: AlertController,
     private ionLoader: LoaderService,
     private ref: ChangeDetectorRef,
-    private toastService: ToastService) { }
-
-  ngOnInit() {
-    this.ionLoader.showLoader();
-    this.sectorService.sectors().subscribe(
-        (res: Sectors) => {
-          this.sectors = res.sectors;
-          this.ref.detectChanges();
-        },
-        err => console.log('Error occurred: ' + err.message),
-        () => this.ionLoader.hideLoader()
-      );
-  }
+    private toastService: ToastService,
+    private messageService: MessageService) { }
 
   ionViewDidEnter(): void {
-    this.ref.detectChanges();
+    this.messageService.receiveMessage().subscribe((m) => {
+      if(m === 'reload') {
+        this.loadData();
+      }
+    });
   }
 
-  async deleteSector(sector: Sector) {
+  ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
+    this.ionLoader.showLoader();
+    this.sectorService.sectors().subscribe(
+      (res: any) => {
+        this.sectors = res.sectors;
+    this.ref.detectChanges();
+      },
+      err => console.log('Error occurred: ' + err.message),
+      () => this.ionLoader.hideLoader()
+    );
+  }
+
+  deleteSector(sector: Sector) {
     this.alertController.create({
       header: 'Delete Confirmation',
       message: 'Are you sure you want to delete this sector?',

@@ -35,11 +35,6 @@ export class SectorsService {
     return this.http.post(this.sectorUrl, this.payload);
   }
 
-  deleteSector(sectorId: string) {
-    this.payload = {body: {sectorId}};
-    return this.http.delete(this.sectorUrl, this.payload);
-  }
-
   updateSector(sector: Sector) {
     this.payload = {
       sectorId: sector.sectorId,
@@ -48,5 +43,10 @@ export class SectorsService {
       active: sector.active
     };
     return this.http.put(this.sectorUrl, this.payload);
+  }
+
+  deleteSector(sectorId: string) {
+    this.payload = {body: {sectorId}};
+    return this.http.delete(this.sectorUrl, this.payload);
   }
 }
