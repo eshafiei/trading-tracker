@@ -3,19 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
-import { AuthPageRoutingModule } from './auth-routing.module';
-
-import { AuthPage } from './auth.page';
+import { AuthorizationService } from './services/authorization.service';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicModule,
-    AuthPageRoutingModule
+    IonicModule
   ],
-  declarations: [AuthPage]
+  declarations: [],
+  providers: [AuthorizationService]
 })
 export class AuthPageModule {}
