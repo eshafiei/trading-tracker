@@ -1,26 +1,52 @@
 import { Injectable } from '@angular/core';
-import { AssetType } from './models/asset-type.enum';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Sector } from './models/sector.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SectorsService {
-  private sectorsList: Sector[] = [
-    { id: 1, name: 'Technology', type: AssetType.stock, active: true },
-    { id: 2, name: 'Automaker', type: AssetType.stock, active: true },
-    { id: 3, name: 'Crypto', type: AssetType.cryptocurrency, active: true },
-    { id: 4, name: 'Retail', type: AssetType.stock, active: false }
-  ];
 
-  constructor() {
+  sectorsUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sectors';
+  sectorUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sector';
+  //headers = new HttpHeaders().set('Content-Type', 'application/json');
+  payload: any;
+
+  constructor(private http: HttpClient) {
   }
 
-  sectors(): Sector[] {
-    return [...this.sectorsList];
+  sectors() {
+    return this.http.get(this.sectorsUrl);
   }
 
-  getSector(id: number): Sector {
-    return {...this.sectorsList.find(p => p.id === id)};
+  getSector(sectorId: string): Observable<any> {
+    const params = new HttpParams().set('sectorId', sectorId);
+    return this.http.get(this.sectorUrl, {params});
+  }
+
+  saveSector(sector: Sector) {
+    this.payload = {
+      sectorId: sector.sectorId,
+      sectorName: sector.sectorName,
+      sectorType: sector.sectorType,
+      active: sector.active
+    };
+    return this.http.post(this.sectorUrl, this.payload);
+  }
+
+  updateSector(sector: Sector) {
+    this.payload = {
+      sectorId: sector.sectorId,
+      sectorName: sector.sectorName,
+      sectorType: sector.sectorType,
+      active: sector.active
+    };
+    return this.http.put(this.sectorUrl, this.payload);
+  }
+
+  deleteSector(sectorId: string) {
+    this.payload = {body: {sectorId}};
+    return this.http.delete(this.sectorUrl, this.payload);
   }
 }

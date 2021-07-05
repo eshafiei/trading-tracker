@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { NewSectorPage } from './new-sector.page';
+import { NewSectorComponent } from './new-sector.component';
 
-describe('NewSectorPage', () => {
-  let component: NewSectorPage;
-  let fixture: ComponentFixture<NewSectorPage>;
+describe('NewSectorComponent', () => {
+  let component: NewSectorComponent;
+  let fixture: ComponentFixture<NewSectorComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewSectorPage ],
+      declarations: [ NewSectorComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(NewSectorPage);
+    fixture = TestBed.createComponent(NewSectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

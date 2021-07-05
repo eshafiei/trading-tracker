@@ -1,0 +1,71 @@
+<form [formGroup]="registerForm" (submit)="register()">
+  <ion-grid>
+    <ion-row>
+      <ion-col size-lg="4" offset-lg="4">
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" formControlName="email" required></ion-input>
+        </ion-item>
+        <ion-item  *ngIf="!f.email.valid && f.email.touched">
+          <ion-label color="danger">
+            Should be a valid email address.
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" formControlName="password" required minlength="8"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!f.password.valid && f.password.touched">
+          <ion-label color="danger">
+            Should at least be 8 characters long.
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">First Name</ion-label>
+          <ion-input type="text" formControlName="firstName" required></ion-input>
+        </ion-item>
+        <ion-item  *ngIf="!f.firstName.valid && f.firstName.touched">
+          <ion-label color="danger">
+            Should be a valid first name.
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Last Name</ion-label>
+          <ion-input type="text" formControlName="lastName" required></ion-input>
+        </ion-item>
+        <ion-item  *ngIf="!f.lastName.valid && f.lastName.touched">
+          <ion-label color="danger">
+            Should be a valid last name.
+          </ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-lg="4" offset-lg="4">
+        <ion-button type="submit" color="primary" expand="full" [disabled]="registerForm.invalid">
+          Signup
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-lg="4" offset-lg="4">
+        <ion-item *ngIf="confirmCode">
+          <ion-label position="floating">Please check your email and enter validation code bellow:</ion-label>
+          <ion-input placeholder="Enter validation code here" type="text" #validationCode required></ion-input>
+          <ion-button (click)="validateAuthCode(validationCode.value)"
+            [disabled]="!validationCode.value" color="primary" expand="full">
+            Validate Code
+          </ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="error">
+      <ion-col size-lg="4" offset-lg="4">
+        <ion-item>
+          <ion-icon name="close-outline" color="danger" size="medium"></ion-icon>
+          <ion-label class="ion-text-wrap" color="danger">{{ error }}</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>

@@ -3,5 +3,6 @@ export enum AssetType {
   etf = 1,
   cryptocurrency = 2,
   bonds = 3,
-  commodity = 4
+  commodity = 4,
+  future = 5
 }
