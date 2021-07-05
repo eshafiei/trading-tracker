@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs';
+import { LoginModel } from '../models/login.model';
+import { UserModel } from '../models/user.model';
 
 const poolData = {
   UserPoolId: '', // Your user pool id here
@@ -16,19 +18,34 @@ export class AuthorizationService {
 
   constructor() { }
 
-  register(email, password) {
+  register(user: UserModel) {
 
-    const attributeList = [];
+  const attributeList = [];
+
+  const firstName = {
+    Name : 'given_name',
+    Value : user.firstName
+  };
+
+  const lastName = {
+    Name : 'family_name',
+    Value : user.lastName
+  };
+
+  const attributeFirstName = new CognitoUserAttribute(firstName);
+  const attributeLastName = new CognitoUserAttribute(lastName);
+  attributeList.push(attributeFirstName);
+  attributeList.push(attributeLastName);
 
     return new Observable(observer => {
-      userPool.signUp(email, password, attributeList, null, (err, result) => {
+      userPool.signUp(user.email, user.password, attributeList, null, (err, result) => {
         if (err) {
-          console.log('signUp error', err);
+          //console.log('signUp error', err);
           observer.error(err);
         }
 
         this.cognitoUser = result.user;
-        console.log('signUp success', result);
+        //console.log('signUp success', result);
         observer.next(result);
         observer.complete();
       });
@@ -36,7 +53,7 @@ export class AuthorizationService {
 
   }
 
-  confirmAuthCode(code) {
+  confirmAuthCode(code: string) {
     const user = {
       Username : this.cognitoUser.username,
       Pool : userPool
@@ -46,26 +63,25 @@ export class AuthorizationService {
       cognitoUser.confirmRegistration(code, true,
         (err, result) => {
           if (err) {
-            console.log(err);
+            //console.log(err);
             observer.error(err);
           }
-          console.log('confirmAuthCode() success', result);
+          //console.log('confirmAuthCode() success', result);
           observer.next(result);
           observer.complete();
         });
     });
   }
 
-  signIn(email, password) {
-
+  signIn(loginModel: LoginModel) {
     const authenticationData = {
-      Username : email,
-      Password : password
+      Username : loginModel.email,
+      Password : loginModel.password
     };
     const authenticationDetails = new AuthenticationDetails(authenticationData);
 
     const userData = {
-      Username : email,
+      Username : loginModel.email,
       Pool : userPool
     };
     const cognitoUser = new CognitoUser(userData);
@@ -78,7 +94,6 @@ export class AuthorizationService {
           observer.complete();
         },
         onFailure: (err) => {
-          console.log(err);
           observer.error(err);
         },
       });

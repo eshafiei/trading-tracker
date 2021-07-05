@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import {NgForm} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../services/authorization.service';
 import { Router } from '@angular/router';
-
-// https://github.com/aws/amazon-cognito-identity-js
-// https://docs.aws.amazon.com/cognito/latest/developerguide/using-amazon-cognito-user-identity-pools-javascript-examples.html
+import { LoaderService } from 'src/app/services/loader.service';
 
 @Component({
   selector: 'app-register',
@@ -12,39 +10,52 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
+  registerForm: FormGroup;
   confirmCode = false;
   codeWasConfirmed = false;
   error = '';
+  validationCode: string;
 
   constructor(private auth: AuthorizationService,
-              private router: Router) { }
+              private router: Router,
+              private fb: FormBuilder,
+              private loader: LoaderService) {
+    this.registerForm = this.fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required]
+    });
+  }
 
-  register(form: NgForm) {
-    const email = form.value.email;
-    const password = form.value.password;
-    this.auth.register(email, password).subscribe(
-      (data) => {
-        this.confirmCode = true;
-      },
+  register() {
+    this.error = '';
+    this.loader.showLoader();
+    this.auth.register(this.registerForm.value).subscribe(
+      () => this.confirmCode = true,
       (err) => {
         console.log(err);
-        this.error = 'Registration Error has occurred';
-      }
+        this.error = err.message;
+        this.loader.hideLoader();
+      },
+      () => this.loader.hideLoader()
     );
   }
 
-  validateAuthCode(form: NgForm) {
-    const code = form.value.code;
-
-    this.auth.confirmAuthCode(code).subscribe(
-      (data) => {
-        //this._router.navigateByUrl('/');
-        this.codeWasConfirmed = true;
-        this.confirmCode = false;
-      },
+  validateAuthCode(validationCode: string | number) {
+    this.error = '';
+    this.loader.showLoader();
+    this.auth.confirmAuthCode(validationCode.toString()).subscribe(
+      () => this.router.navigateByUrl('/login'),
       (err) => {
-        console.log(err);
-        this.error = 'Confirm Authorization Error has occurred';
-      });
+        this.error = err.message;
+        this.loader.hideLoader();
+      },
+      () => this.loader.hideLoader()
+    );
+  }
+
+  get f() {
+    return this.registerForm.controls;
   }
 }
