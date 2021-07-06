@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../../services/authorization.service';
 import { Router } from '@angular/router';
-import { LoaderService } from 'src/app/services/loader.service';
+import { LoaderService } from 'src/app/shared/services/loader.service';
 
 @Component({
   selector: 'app-register',
@@ -21,6 +21,7 @@ export class RegisterComponent {
               private fb: FormBuilder,
               private loader: LoaderService) {
     this.registerForm = this.fb.group({
+      username: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required],
       firstName: ['', Validators.required],

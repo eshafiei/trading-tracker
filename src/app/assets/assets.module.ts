@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { AssetsPageRoutingModule } from './assets-routing.module';
 
 import { AssetsPage } from './assets.page';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { AssetsPage } from './assets.page';
     IonicModule,
     AssetsPageRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [AssetsPage]
 })

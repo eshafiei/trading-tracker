@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { Observable } from 'rxjs';
+import { MessageService } from '../../shared/services/message.service';
 import { LoginModel } from '../models/login.model';
 import { UserModel } from '../models/user.model';
 
@@ -16,11 +17,16 @@ const userPool = new CognitoUserPool(poolData);
 export class AuthorizationService {
   cognitoUser: any;
 
-  constructor() { }
+  constructor(private messageService: MessageService) { }
 
   register(user: UserModel) {
 
   const attributeList = [];
+
+  const email = {
+    Name : 'email',
+    Value : user.email
+  };
 
   const firstName = {
     Name : 'given_name',
@@ -32,20 +38,20 @@ export class AuthorizationService {
     Value : user.lastName
   };
 
+  const attributeEmail = new CognitoUserAttribute(email);
   const attributeFirstName = new CognitoUserAttribute(firstName);
   const attributeLastName = new CognitoUserAttribute(lastName);
   attributeList.push(attributeFirstName);
   attributeList.push(attributeLastName);
+  attributeList.push(attributeEmail);
 
     return new Observable(observer => {
-      userPool.signUp(user.email, user.password, attributeList, null, (err, result) => {
+      userPool.signUp(user.username, user.password, attributeList, null, (err, result) => {
         if (err) {
-          //console.log('signUp error', err);
           observer.error(err);
         }
 
         this.cognitoUser = result.user;
-        //console.log('signUp success', result);
         observer.next(result);
         observer.complete();
       });
@@ -63,10 +69,8 @@ export class AuthorizationService {
       cognitoUser.confirmRegistration(code, true,
         (err, result) => {
           if (err) {
-            //console.log(err);
             observer.error(err);
           }
-          //console.log('confirmAuthCode() success', result);
           observer.next(result);
           observer.complete();
         });
@@ -91,6 +95,7 @@ export class AuthorizationService {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: (result) => {
           observer.next(result);
+          console.log(result);
           observer.complete();
         },
         onFailure: (err) => {
@@ -109,8 +114,19 @@ export class AuthorizationService {
     return userPool.getCurrentUser();
   }
 
+  // getUserAttributes() {
+  //   // gets the current user from the local storage
+  //   let userAttributes: any;
+  //   userPool.getCurrentUser().getSession(() => {});
+  //   userPool.getCurrentUser().getUserAttributes(
+  //     (attr) => userAttributes = attr
+  //   );
+  //   return userAttributes;
+  // }
+
   logOut() {
-    this.getAuthenticatedUser().signOut();
+    this.messageService.sendMessage('loggedOut');
+    this.getAuthenticatedUser()?.signOut();
     this.cognitoUser = null;
   }
 }

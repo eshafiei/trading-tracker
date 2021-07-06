@@ -8,6 +8,7 @@ import { SectorsPage } from './sectors.page';
 import { SectorFormComponent } from './components/sector-form/sector-form.component';
 import { EditSectorComponent } from './containers/edit-sector/edit-sector.component';
 import { NewSectorComponent } from './containers/new-sector/new-sector.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { NewSectorComponent } from './containers/new-sector/new-sector.component
     IonicModule,
     SectorsPageRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [SectorsPage, NewSectorComponent, EditSectorComponent, SectorFormComponent],
   exports: [SectorFormComponent]

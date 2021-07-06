@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoaderService } from 'src/app/services/loader.service';
+import { ViewDidEnter } from '@ionic/angular';
+import { LoaderService } from 'src/app/shared/services/loader.service';
+import { MessageService } from 'src/app/shared/services/message.service';
 import { AuthorizationService } from '../../services/authorization.service';
 
 @Component({
@@ -9,7 +11,7 @@ import { AuthorizationService } from '../../services/authorization.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements ViewDidEnter{
   public loginForm: FormGroup;
   emailVerificationMessage = false;
   error = '';
@@ -17,10 +19,19 @@ export class LoginComponent {
   constructor(private auth: AuthorizationService,
               private router: Router,
               private fb: FormBuilder,
-              private loader: LoaderService) {
+              private loader: LoaderService,
+              private messageService: MessageService) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
+    });
+  }
+
+  ionViewDidEnter(): void {
+    this.messageService.receiveMessage().subscribe((m) => {
+      if(m === 'loggedOut') {
+        console.log('loggedout!');
+      }
     });
   }
 

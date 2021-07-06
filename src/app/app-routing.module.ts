@@ -11,10 +11,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then( m => m.AuthPageModule)
-  },
-  {
     path: 'assets',
     loadChildren: () => import('./assets/assets.module').then( m => m.AssetsPageModule),
     canActivate: [AuthGuard]

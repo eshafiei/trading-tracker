@@ -11,11 +11,14 @@ import { LoginComponent } from './auth/containers/login/login.component';
 import { RegisterComponent } from './auth/containers/register/register.component';
 import { AuthorizationService } from './auth/services/authorization.service';
 import { AuthGuardService } from './auth/services/auth-guard.service';
+import { SharedModule } from './shared/shared.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule,
+    SharedModule, AuthModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, AuthorizationService, AuthGuardService],
   bootstrap: [AppComponent],
 })

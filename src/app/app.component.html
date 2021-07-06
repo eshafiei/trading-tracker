@@ -3,9 +3,13 @@
     <ion-toolbar color="medium">
       <ion-icon name="analytics-outline" size="large" slot="start"></ion-icon>
       <ion-title class="ion-text-center">TRADING TRACKER</ion-title>
+      <ion-buttons slot="end" (click)="openAuthMenu()">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
+  <app-auth-menu></app-auth-menu>
   <ion-content>
-    <ion-router-outlet></ion-router-outlet>
+    <ion-router-outlet id="main"></ion-router-outlet>
   </ion-content>
 </ion-app>
