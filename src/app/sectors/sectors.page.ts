@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AlertController, ViewDidEnter } from '@ionic/angular';
 import { Observable } from 'rxjs';
-import { LoaderService } from '../services/loader.service';
-import { MessageService } from '../services/message.service';
-import { ToastService } from '../services/toast.service';
+import { LoaderService } from '../shared/services/loader.service';
+import { MessageService } from '../shared/services/message.service';
+import { ToastService } from '../shared/services/toast.service';
 import { Sector } from './models/sector.model';
 import { SectorsService } from './sectors.service';
 

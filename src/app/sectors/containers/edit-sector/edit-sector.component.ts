@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { LoaderService } from '../../../services/loader.service';
-import { MessageService } from '../../../services/message.service';
-import { ToastService } from '../../../services/toast.service';
+import { LoaderService } from '../../../shared/services/loader.service';
+import { MessageService } from '../../../shared/services/message.service';
+import { ToastService } from '../../../shared/services/toast.service';
 import { Sector } from '../../models/sector.model';
 import { SectorsService } from '../../sectors.service';
 

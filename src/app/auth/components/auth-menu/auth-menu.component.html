@@ -1,0 +1,20 @@
+<ion-menu side="end" type="overlay" contentId="main">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>User Menu</ion-title>
+    </ion-toolbar>
+    <ion-toolbar color="light" *ngIf="isAuthenticated">
+      <ion-title>Hello {{ user.username }}!</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-menu-toggle auto-hide="true" >
+        <ion-item *ngIf="!isAuthenticated" routerLink="/register">Register</ion-item>
+        <ion-item *ngIf="!isAuthenticated" routerLink="/login">Login</ion-item>
+        <ion-item *ngIf="isAuthenticated" (click)="updateAccount()" routerLink="/account">My Account</ion-item>
+        <ion-item *ngIf="isAuthenticated" (click)="logOut()" routerLink="/login">Logout</ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>
