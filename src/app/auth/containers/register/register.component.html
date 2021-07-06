@@ -1,79 +1,104 @@
-<form [formGroup]="registerForm" (submit)="register()">
+<form [formGroup]="registerForm">
   <ion-grid>
     <ion-row>
       <ion-col size-lg="4" offset-lg="4">
         <ion-item>
           <ion-label position="floating">Username</ion-label>
-          <ion-input type="text" formControlName="username" required></ion-input>
-        </ion-item>
-        <ion-item  *ngIf="!f.username.valid && f.username.touched">
-          <ion-label color="danger">
-            Should be a valid username.
-          </ion-label>
+          <ion-input type="text" formControlName="username"></ion-input>
+          <ion-note *ngIf="(f.username.errors && !f.username.errors.required) &&
+            (f.username.dirty || f.username.touched)" color="danger">
+            Username is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.username.errors && f.username.errors.required) && (f.username.dirty || f.username.touched)" color="danger">
+            Username is required!
+          </ion-note>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" formControlName="email" required></ion-input>
-        </ion-item>
-        <ion-item  *ngIf="!f.email.valid && f.email.touched">
-          <ion-label color="danger">
-            Should be a valid email address.
-          </ion-label>
+          <ion-input type="email" formControlName="email"></ion-input>
+          <ion-note *ngIf="(f.email.errors && !f.email.errors.required) && (f.email.dirty || f.email.touched)" color="danger">
+            E-Mail is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.email.errors && f.email.errors.required) && (f.email.dirty || f.email.touched)" color="danger">
+            E-Mail is required!
+          </ion-note>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Password</ion-label>
-          <ion-input type="password" formControlName="password" required minlength="8"></ion-input>
+          <ion-input type="password" formControlName="password"></ion-input>
+          <ion-note *ngIf="(f.password.errors && !f.password.errors.required && !f.password.errors.minlength) &&
+            (f.password.dirty || f.password.touched)" color="danger">
+            Password is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.password.errors && f.password.errors.required) && (f.password.dirty || f.password.touched)" color="danger">
+            Password is required!
+          </ion-note>
+          <ion-note *ngIf="(f.password.errors && f.password.errors.minlength) && (f.password.dirty || f.password.touched)" color="danger">
+            Password should be atleast 8 characters!
+          </ion-note>
         </ion-item>
-        <ion-item *ngIf="!f.password.valid && f.password.touched">
-          <ion-label color="danger">
-            Should at least be 8 characters long.
-          </ion-label>
+        <ion-item>
+          <ion-label position="floating">Confirm Password</ion-label>
+          <ion-input type="password" formControlName="confirmPassword"
+            pattern="{{ f.password.value }}"></ion-input>
+          <ion-note *ngIf="(f.confirmPassword.errors && !f.confirmPassword.errors.required && !f.confirmPassword.errors.minlength) &&
+            (f.confirmPassword.dirty || f.confirmPassword.touched)" color="danger">
+            Confirm Password is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.confirmPassword.errors && f.confirmPassword.errors.required) && (f.confirmPassword.dirty || f.confirmPassword.touched)" color="danger">
+            Confirm Password is required!
+          </ion-note>
+          <ion-note *ngIf="(f.confirmPassword.errors && f.confirmPassword.errors.minlength) && (f.confirmPassword.dirty || f.confirmPassword.touched)" color="danger">
+            Confirm Password should be atleast 8 characters!
+          </ion-note>
         </ion-item>
         <ion-item>
           <ion-label position="floating">First Name</ion-label>
-          <ion-input type="text" formControlName="firstName" required></ion-input>
-        </ion-item>
-        <ion-item  *ngIf="!f.firstName.valid && f.firstName.touched">
-          <ion-label color="danger">
-            Should be a valid first name.
-          </ion-label>
+          <ion-input type="text" formControlName="firstName"></ion-input>
+          <ion-note *ngIf="(f.firstName.errors && !f.firstName.errors.required) && (f.firstName.dirty || f.firstName.touched)" color="danger">
+            First Name is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.firstName.errors && f.firstName.errors.required) && (f.firstName.dirty || f.firstName.touched)" color="danger">
+            First Name is required!
+          </ion-note>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Last Name</ion-label>
-          <ion-input type="text" formControlName="lastName" required></ion-input>
-        </ion-item>
-        <ion-item  *ngIf="!f.lastName.valid && f.lastName.touched">
-          <ion-label color="danger">
-            Should be a valid last name.
-          </ion-label>
+          <ion-input type="text" formControlName="lastName"></ion-input>
+          <ion-note *ngIf="(f.lastName.errors && !f.lastName.errors.required) && (f.lastName.dirty || f.lastName.touched)" color="danger">
+            Last Name is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.lastName.errors && f.lastName.errors.required) && (f.lastName.dirty || f.lastName.touched)" color="danger">
+            Last Name is required!
+          </ion-note>
         </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-lg="4" offset-lg="4">
-        <ion-button type="submit" color="primary" expand="full" [disabled]="registerForm.invalid">
+        <ion-button type="submit" color="primary" expand="full"
+          [disabled]="registerForm.invalid" (click)="signup($event)">
           Signup
         </ion-button>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *ngIf="confirmCode">
       <ion-col size-lg="4" offset-lg="4">
-        <ion-item *ngIf="confirmCode">
-          <ion-label position="floating">Please check your email and enter validation code bellow:</ion-label>
-          <ion-input placeholder="Enter validation code here" type="text" #validationCode required></ion-input>
-          <ion-button (click)="validateAuthCode(validationCode.value)"
+        <ion-item>
+          <ion-label position="floating">Please check your email and enter validation code</ion-label>
+          <ion-input type="text" #validationCode required color="warning"></ion-input>
+        </ion-item>
+        <ion-button (click)="validateAuthCode(validationCode.value)"
             [disabled]="!validationCode.value" color="primary" expand="full">
             Validate Code
           </ion-button>
-        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="error">
-      <ion-col size-lg="4" offset-lg="4">
-        <ion-item>
-          <ion-icon name="close-outline" color="danger" size="medium"></ion-icon>
-          <ion-label class="ion-text-wrap" color="danger">{{ error }}</ion-label>
-        </ion-item>
+      <ion-col size-lg="4" offset-lg="4" class="ion-text-center">
+          <ion-badge class="ion-text-wrap" color="danger">
+            {{ error }}
+          </ion-badge>
       </ion-col>
     </ion-row>
   </ion-grid>
