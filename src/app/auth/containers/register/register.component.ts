@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthorizationService } from '../../services/authorization.service';
 import { Router } from '@angular/router';
-import { LoaderService } from 'src/app/shared/services/loader.service';
+import { AuthorizationService } from '../../services/authorization.service';
+import { LoaderService } from '../../../shared/services/loader.service';
+import { LoginModel } from '../../models/login.model';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,6 @@ import { LoaderService } from 'src/app/shared/services/loader.service';
 export class RegisterComponent {
   registerForm: FormGroup;
   confirmCode = false;
-  codeWasConfirmed = false;
   error = '';
   validationCode: string;
 
@@ -22,20 +22,25 @@ export class RegisterComponent {
               private loader: LoaderService) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+      confirmPassword: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required]
     });
   }
 
-  register() {
+  get f() {
+    return this.registerForm.controls;
+  }
+
+  signup(event: any) {
     this.error = '';
+    event.target.disabled = true;
     this.loader.showLoader();
     this.auth.register(this.registerForm.value).subscribe(
       () => this.confirmCode = true,
       (err) => {
-        console.log(err);
         this.error = err.message;
         this.loader.hideLoader();
       },
@@ -45,18 +50,18 @@ export class RegisterComponent {
 
   validateAuthCode(validationCode: string | number) {
     this.error = '';
-    this.loader.showLoader();
     this.auth.confirmAuthCode(validationCode.toString()).subscribe(
-      () => this.router.navigateByUrl('/login'),
-      (err) => {
-        this.error = err.message;
-        this.loader.hideLoader();
+      () => {
+        const loginModel: LoginModel = {
+          email: this.registerForm.value?.email,
+          password: this.registerForm.value?.password
+        };
+        this.auth.signIn(loginModel).subscribe(
+          () => this.router.navigateByUrl(''),
+          (err) => this.error = err.message
+        );
       },
-      () => this.loader.hideLoader()
+      (err) => this.error = err.message
     );
-  }
-
-  get f() {
-    return this.registerForm.controls;
   }
 }

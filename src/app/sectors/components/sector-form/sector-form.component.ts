@@ -46,7 +46,7 @@ export class SectorFormComponent implements OnInit, OnChanges {
     element.selectedText = this.assetTypes[event.detail.value];
   }
 
-  submit() {
+  save() {
     this.itemEvent.emit(this.sectorForm.value);
   }
 

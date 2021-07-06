@@ -1,4 +1,4 @@
-<form [formGroup]="sectorForm">
+<form [formGroup]="sectorForm" (ngSubmit)="save()">
   <ion-grid>
     <ion-row>
       <ion-col size-lg="4" offset-lg="4">
@@ -8,7 +8,7 @@
             <ion-back-button [defaultHref]="'/sectors'" text=''></ion-back-button>
           </ion-buttons>
           <ion-buttons slot="end">
-            <ion-button (click)="submit()">
+            <ion-button type="submit" [disabled]="sectorForm.invalid" color="primary">
               <ion-icon name="save" slot="icon-only"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -16,6 +16,12 @@
         <ion-item class="ion-margin">
           <ion-label position="floating">Sector</ion-label>
           <ion-input type="text" formControlName="sectorName"></ion-input>
+          <ion-note *ngIf="(f.sectorName.errors && !f.sectorName.errors.required) && (f.sectorName.dirty || f.sectorName.touched)" color="danger">
+            Sector Name is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.sectorName.errors && f.sectorName.errors.required) && (f.sectorName.dirty || f.sectorName.touched)" color="danger">
+            Sector Name is required!
+          </ion-note>
         </ion-item>
         <ion-item class="ion-margin">
           <ion-label position="floating">Type</ion-label>
@@ -24,6 +30,12 @@
             value="f.sectorType.value">
             <ion-select-option *ngFor="let type of assetTypeItems" [value]="type">{{assetTypes[type]}}</ion-select-option>
           </ion-select>
+          <ion-note *ngIf="(f.sectorType.errors && !f.sectorType.errors.required) && (f.sectorType.dirty || f.sectorType.touched)" color="danger">
+            Sector Type is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.sectorType?.hasError('required')) && (f.sectorType.dirty || f.sectorType.touched)" color="danger">
+            Sector Type is required!
+          </ion-note>
         </ion-item>
         <ion-item class="ion-margin">
           <ion-label>Active</ion-label>

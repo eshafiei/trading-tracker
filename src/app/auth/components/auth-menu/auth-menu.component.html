@@ -1,19 +1,34 @@
 <ion-menu side="end" type="overlay" contentId="main">
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title>User Menu</ion-title>
+      <ion-item color="primary">
+        <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+        <ion-title>User Menu</ion-title>
+      </ion-item>
     </ion-toolbar>
-    <ion-toolbar color="light" *ngIf="isAuthenticated">
+    <ion-toolbar color="light" *ngIf="isAuthenticated" class="ion-text-center">
       <ion-title>Hello {{ user.username }}!</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
     <ion-list>
       <ion-menu-toggle auto-hide="true" >
-        <ion-item *ngIf="!isAuthenticated" routerLink="/register">Register</ion-item>
-        <ion-item *ngIf="!isAuthenticated" routerLink="/login">Login</ion-item>
-        <ion-item *ngIf="isAuthenticated" (click)="updateAccount()" routerLink="/account">My Account</ion-item>
-        <ion-item *ngIf="isAuthenticated" (click)="logOut()" routerLink="/login">Logout</ion-item>
+        <ion-item *ngIf="!isAuthenticated" routerLink="/register">
+          <ion-icon name="person-add-outline" color="primary" slot="start"></ion-icon>
+          <ion-text>Register</ion-text>
+        </ion-item>
+        <ion-item *ngIf="!isAuthenticated" routerLink="/login">
+          <ion-icon name="log-in-outline" color="primary" slot="start"></ion-icon>
+          <ion-text>Login</ion-text>
+        </ion-item>
+        <ion-item *ngIf="isAuthenticated" (click)="updateAccount()">
+          <ion-icon name="person-outline" color="primary" slot="start"></ion-icon>
+          <ion-text>My Account</ion-text>
+        </ion-item>
+        <ion-item *ngIf="isAuthenticated" (click)="logOut()" routerLink="/login">
+          <ion-icon name="log-out-outline" color="danger" slot="start"></ion-icon>
+          <ion-text>Logout</ion-text>
+        </ion-item>
       </ion-menu-toggle>
     </ion-list>
   </ion-content>
