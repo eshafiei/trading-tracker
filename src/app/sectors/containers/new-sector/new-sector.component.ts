@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { UUID } from 'angular2-uuid';
+import { Router } from '@angular/router';
 import { LoaderService } from '../../../shared/services/loader.service';
 import { ToastService } from '../../../shared/services/toast.service';
 import { Sector } from '../../models/sector.model';
 import { SectorsService } from '../../sectors.service';
-import { UUID } from 'angular2-uuid';
-import { Router } from '@angular/router';
 import { MessageService } from '../../../shared/services/message.service';
+import { AppState } from '../../../store/models/app.state';
+import { Store } from '@ngrx/store';
+import { AuthenticatedUser } from '../../../store/models/authenticated-user.model';
+import { Observable } from 'rxjs';
+import { AuthorizationService } from 'src/app/auth/services/authorization.service';
 
 @Component({
   selector: 'app-new-sector',
@@ -15,13 +20,19 @@ import { MessageService } from '../../../shared/services/message.service';
 export class NewSectorComponent implements OnInit {
   sectorData: Sector;
   isEdit: boolean;
+  authenticatedUser: Observable<AuthenticatedUser[]>;
   private sectorId: string;
 
   constructor(private ionLoader: LoaderService,
     private toastService: ToastService,
     private sectorService: SectorsService,
     private messageService: MessageService,
-    private route: Router) {}
+    private route: Router,
+    private store: Store<AppState>,
+    private auth: AuthorizationService) {
+      this.authenticatedUser = this.store.select('authenticatedUser');
+      console.log(this.authenticatedUser);
+    }
 
   ngOnInit() {
     this.isEdit = false;
@@ -30,6 +41,10 @@ export class NewSectorComponent implements OnInit {
   addSector(sectorItem: Sector) {
     this.ionLoader.showLoader();
     sectorItem.sectorId = this.generateGUID();
+    this.auth.getIdToken().subscribe(res => {
+      sectorItem.userId = res.payload.sub;
+    });
+
     this.sectorService.saveSector(sectorItem).subscribe(
       () => {
         this.toastService.presentToastWithOptions('SAVE CONFIRMATION',
