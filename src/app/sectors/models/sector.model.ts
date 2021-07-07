@@ -7,4 +7,5 @@ export interface Sector {
   sectorName: string;
   sectorType: number;
   active: boolean;
+  userId: string;
 }

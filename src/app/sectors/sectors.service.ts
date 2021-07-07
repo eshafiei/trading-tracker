@@ -16,8 +16,9 @@ export class SectorsService {
   constructor(private http: HttpClient) {
   }
 
-  sectors() {
-    return this.http.get(this.sectorsUrl);
+  sectors(userId: string) {
+    const params = new HttpParams().set('userId', userId);
+    return this.http.get(this.sectorsUrl, {params});
   }
 
   getSector(sectorId: string): Observable<any> {
@@ -30,7 +31,8 @@ export class SectorsService {
       sectorId: sector.sectorId,
       sectorName: sector.sectorName,
       sectorType: sector.sectorType,
-      active: sector.active
+      active: sector.active,
+      userId: sector.userId
     };
     return this.http.post(this.sectorUrl, this.payload);
   }

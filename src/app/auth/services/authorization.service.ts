@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribute } from 'amazon-cognito-identity-js';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribute,
+  CognitoIdToken, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { Observable, Observer, throwError } from 'rxjs';
+import { AppState } from '../../store/models/app.state';
 import { MessageService } from '../../shared/services/message.service';
 import { LoginModel } from '../models/login.model';
 import { UserModel } from '../models/user.model';
+import { AuthenticatedUser } from '../../store/models/authenticated-user.model';
+import * as AuthActions from '../../store/actions/auth.action';
 
 const poolData = {
   UserPoolId: '', // Your user pool id here
@@ -17,7 +22,8 @@ const userPool = new CognitoUserPool(poolData);
 export class AuthorizationService {
   cognitoUser: any;
 
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService,
+    private store: Store<AppState>) {}
 
   register(user: UserModel) {
 
@@ -96,6 +102,16 @@ export class AuthorizationService {
         onSuccess: (result) => {
           observer.next(result);
           console.log(result);
+          this.getIdToken().subscribe(res => {
+            console.log('userId:' + res.payload.sub);
+            this.store.dispatch(new AuthActions.SignIn({
+              jwtToken: '',//res.jwtToken,
+              authTime: res.payload.auth_time,
+              givenName: res.payload.given_name,
+              familyName: res.payload.family_name,
+              userId: res.payload.sub
+            }));
+          });
           observer.complete();
         },
         onFailure: (err) => {
@@ -114,15 +130,22 @@ export class AuthorizationService {
     return userPool.getCurrentUser();
   }
 
-  // getUserAttributes() {
-  //   // gets the current user from the local storage
-  //   let userAttributes: any;
-  //   userPool.getCurrentUser().getSession(() => {});
-  //   userPool.getCurrentUser().getUserAttributes(
-  //     (attr) => userAttributes = attr
-  //   );
-  //   return userAttributes;
-  // }
+  getIdToken(): Observable<CognitoIdToken> {
+    const user: CognitoUser = userPool.getCurrentUser();
+
+    if (user) {
+      return new Observable((observer: Observer<any>) => {
+        user.getSession((err, session: CognitoUserSession) => {
+          if (err) {
+            return observer.error(err);
+          }
+          observer.next(session.getIdToken());
+        });
+      });
+    } else {
+      return throwError(null);
+    }
+  }
 
   logOut() {
     this.messageService.sendMessage('loggedOut');

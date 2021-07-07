@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AlertController, ViewDidEnter } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { AuthorizationService } from '../auth/services/authorization.service';
 import { LoaderService } from '../shared/services/loader.service';
 import { MessageService } from '../shared/services/message.service';
 import { ToastService } from '../shared/services/toast.service';
@@ -22,7 +23,8 @@ export class SectorsPage implements OnInit, ViewDidEnter {
     private ionLoader: LoaderService,
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private auth: AuthorizationService) { }
 
   ionViewDidEnter(): void {
     this.messageService.receiveMessage().subscribe((m) => {
@@ -38,13 +40,19 @@ export class SectorsPage implements OnInit, ViewDidEnter {
 
   loadData() {
     this.ionLoader.showLoader();
-    this.sectorService.sectors().subscribe(
+    let userId = '';
+    this.auth.getIdToken().subscribe(res => {
+      userId = res.payload.sub;
+    });
+    this.sectorService.sectors(userId).subscribe(
       (res: any) => {
         this.sectors = res.sectors;
-    this.ref.detectChanges();
+        this.ref.detectChanges();
       },
       err => console.log('Error occurred: ' + err.message),
-      () => this.ionLoader.hideLoader()
+      () => {
+        this.ionLoader.hideLoader();
+      }
     );
   }
 
@@ -70,5 +78,4 @@ export class SectorsPage implements OnInit, ViewDidEnter {
       ]
     }).then(alertEl => alertEl.present());
   }
-
 }

@@ -48,7 +48,8 @@ export class EditSectorComponent implements OnInit {
             sectorId: res.sectorId,
             sectorName: res.sectorName,
             sectorType: res.sectorType,
-            active: res.active
+            active: res.active,
+            userId: ''
           },
         err => console.log('Error occurred: ' + err.message),
         () => this.ionLoader.hideLoader()
