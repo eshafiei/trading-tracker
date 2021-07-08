@@ -9,11 +9,11 @@ const routes: Routes = [
     component: AssetsPage
   },
   {
-    path: 'new-asset',
+    path: 'new',
     loadChildren: () => import('./new-asset/new-asset.module').then( m => m.NewAssetPageModule)
   },
   {
-    path: 'edit-asset',
+    path: 'edit/:assetId',
     loadChildren: () => import('./edit-asset/edit-asset.module').then( m => m.EditAssetPageModule)
   }
 ];

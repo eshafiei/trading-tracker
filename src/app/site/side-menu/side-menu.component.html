@@ -1,0 +1,29 @@
+<ion-menu side="end" type="overlay" contentId="main">
+  <ion-header>
+    <ion-item color="primary">
+      <ion-icon name="grid-outline" slot="start"></ion-icon>
+    </ion-item>
+    <ion-toolbar color="light" *ngIf="isAuthenticated">
+      <ion-title>Hello {{ user.username }}!</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-menu-toggle auto-hide="true" >
+        <ion-item-group *ngIf="!isAuthenticated">
+          <ion-item *ngFor="let menu of publicMenuItems" routerLink="{{menu.url}}">
+            <ion-icon name="{{menu.icon}}" color="primary" slot="start"></ion-icon>
+            <ion-text>{{ menu.name }}</ion-text>
+          </ion-item>
+        </ion-item-group>
+        <ion-item-group *ngIf="isAuthenticated">
+          <ion-item *ngFor="let menu of authorizedMenuItems" routerLink="{{menu.url}}"
+            (click)="click(menu.action)">
+            <ion-icon name="{{menu.icon}}" color="primary" slot="start"></ion-icon>
+            <ion-text>{{ menu.name }}</ion-text>
+          </ion-item>
+        </ion-item-group>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>

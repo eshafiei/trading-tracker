@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoaderService } from '../../shared/services/loader.service';
 import { LoginModel } from '../models/login.model';
 import { AuthorizationService } from '../services/authorization.service';
 
@@ -18,8 +17,7 @@ export class RegisterPage {
 
   constructor(private auth: AuthorizationService,
               private router: Router,
-              private fb: FormBuilder,
-              private loader: LoaderService) {
+              private fb: FormBuilder) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, Validators.email])],
@@ -37,14 +35,9 @@ export class RegisterPage {
   signup(event: any) {
     this.error = '';
     event.target.disabled = true;
-    this.loader.showLoader();
     this.auth.register(this.registerForm.value).subscribe(
       () => this.confirmCode = true,
-      (err) => {
-        this.error = err.message;
-        this.loader.hideLoader();
-      },
-      () => this.loader.hideLoader()
+      (err) => this.error = err.message
     );
   }
 

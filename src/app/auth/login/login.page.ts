@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoaderService } from '../../shared/services/loader.service';
 import { AuthorizationService } from '../services/authorization.service';
 
 @Component({
@@ -15,8 +14,7 @@ export class LoginPage {
 
   constructor(private auth: AuthorizationService,
               private router: Router,
-              private fb: FormBuilder,
-              private loader: LoaderService) {
+              private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(8)])]
@@ -29,15 +27,10 @@ export class LoginPage {
 
   login() {
     this.error = '';
-    this.loader.showLoader();
 
     this.auth.signIn(this.loginForm.value).subscribe(
       () => this.router.navigateByUrl('/sectors'),
-      (err) => {
-        this.loader.hideLoader();
-        this.error = err.message;
-      },
-      () => this.loader.hideLoader()
+      (err) => this.error = err.message
     );
   }
 }
