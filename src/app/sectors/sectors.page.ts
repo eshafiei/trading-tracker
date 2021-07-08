@@ -20,7 +20,6 @@ export class SectorsPage implements OnInit, ViewDidEnter {
 
   constructor(private sectorService: SectorsService,
     private alertController: AlertController,
-    private ionLoader: LoaderService,
     private ref: ChangeDetectorRef,
     private toastService: ToastService,
     private messageService: MessageService,
@@ -39,7 +38,6 @@ export class SectorsPage implements OnInit, ViewDidEnter {
   }
 
   loadData() {
-    this.ionLoader.showLoader();
     let userId = '';
     this.auth.getIdToken().subscribe(res => {
       userId = res.payload.sub;
@@ -49,10 +47,7 @@ export class SectorsPage implements OnInit, ViewDidEnter {
         this.sectors = res.sectors;
         this.ref.detectChanges();
       },
-      err => console.log('Error occurred: ' + err.message),
-      () => {
-        this.ionLoader.hideLoader();
-      }
+      err => console.log('Error occurred: ' + err.message)
     );
   }
 

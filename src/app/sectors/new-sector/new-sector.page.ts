@@ -4,7 +4,6 @@ import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AuthorizationService } from '../../auth/services/authorization.service';
-import { LoaderService } from '../../shared/services/loader.service';
 import { MessageService } from '../../shared/services/message.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { AppState } from '../../store/models/app.state';
@@ -23,8 +22,7 @@ export class NewSectorPage implements OnInit {
   authenticatedUser: Observable<AuthenticatedUser[]>;
   private sectorId: string;
 
-  constructor(private ionLoader: LoaderService,
-    private toastService: ToastService,
+  constructor(private toastService: ToastService,
     private sectorService: SectorsService,
     private messageService: MessageService,
     private route: Router,
@@ -39,7 +37,6 @@ export class NewSectorPage implements OnInit {
   }
 
   addSector(sectorItem: Sector) {
-    this.ionLoader.showLoader();
     sectorItem.sectorId = this.generateGUID();
     this.auth.getIdToken().subscribe(res => {
       sectorItem.userId = res.payload.sub;
@@ -52,8 +49,7 @@ export class NewSectorPage implements OnInit {
         this.messageService.sendMessage('reload');
         this.route.navigate(['./sectors']);
       },
-      err => console.log(err),
-      () => this.ionLoader.hideLoader()
+      err => console.log(err)
     );
   }
 

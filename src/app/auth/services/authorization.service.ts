@@ -5,11 +5,10 @@ import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserAttribu
   CognitoIdToken, CognitoUserSession } from 'amazon-cognito-identity-js';
 import { Observable, Observer, throwError } from 'rxjs';
 import { AppState } from '../../store/models/app.state';
-import { MessageService } from '../../shared/services/message.service';
 import { LoginModel } from '../models/login.model';
 import { UserModel } from '../models/user.model';
-import { AuthenticatedUser } from '../../store/models/authenticated-user.model';
 import * as AuthActions from '../../store/actions/auth.action';
+import { Router } from '@angular/router';
 
 const poolData = {
   UserPoolId: '', // Your user pool id here
@@ -22,7 +21,7 @@ const userPool = new CognitoUserPool(poolData);
 export class AuthorizationService {
   cognitoUser: any;
 
-  constructor(private messageService: MessageService,
+  constructor(private router: Router,
     private store: Store<AppState>) {}
 
   register(user: UserModel) {
@@ -148,8 +147,8 @@ export class AuthorizationService {
   }
 
   logOut() {
-    this.messageService.sendMessage('loggedOut');
     this.getAuthenticatedUser()?.signOut();
     this.cognitoUser = null;
+    this.router.navigateByUrl('/login');
   }
 }

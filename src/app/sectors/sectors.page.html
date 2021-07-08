@@ -16,7 +16,7 @@
           <ion-card-content>
             <ion-item *ngFor="let sector of sectors">
               <ion-icon name="file-tray-full-outline" color="warning"></ion-icon>
-              <ion-label class="ion-margin" [routerLink]="['/', 'sectors', 'edit', sector.sectorId]">{{ sector.sectorName }}</ion-label>
+              <ion-label class="ion-margin" [routerLink]="['/', 'sectors', 'edit', sector?.sectorId]">{{ sector.sectorName }}</ion-label>
               <ion-buttons>
                 <ion-button (click)="deleteSector(sector)" color="danger">
                   <ion-icon name="trash-outline" slot="icon-only" size="small"></ion-icon>

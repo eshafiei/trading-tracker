@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './auth/services/auth-guard.service';
+import { NotFoundPage } from './site/not-found/not-found.page';
 
 const routes: Routes = [
   {
@@ -19,8 +20,16 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'login',
+    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
     path: '**',
-    redirectTo: 'login'
+    component: NotFoundPage
   }
 ];
 
