@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { LoaderService } from '../../../shared/services/loader.service';
-import { MessageService } from '../../../shared/services/message.service';
-import { ToastService } from '../../../shared/services/toast.service';
-import { Sector } from '../../models/sector.model';
-import { SectorsService } from '../../sectors.service';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { LoaderService } from '../../shared/services/loader.service';
+import { MessageService } from '../../shared/services/message.service';
+import { ToastService } from '../../shared/services/toast.service';
+import { Sector } from '../models/sector.model';
+import { SectorsService } from '../sectors.service';
 
 @Component({
   selector: 'app-edit-sector',
-  templateUrl: './edit-sector.component.html',
-  styleUrls: ['./edit-sector.component.scss'],
+  templateUrl: './edit-sector.page.html',
+  styleUrls: ['./edit-sector.page.scss'],
 })
-export class EditSectorComponent implements OnInit {
+export class EditSectorPage implements OnInit {
   sectorData: Sector;
   isEdit: boolean;
 
@@ -49,7 +50,7 @@ export class EditSectorComponent implements OnInit {
             sectorName: res.sectorName,
             sectorType: res.sectorType,
             active: res.active,
-            userId: ''
+            userId: res.userId
           },
         err => console.log('Error occurred: ' + err.message),
         () => this.ionLoader.hideLoader()
@@ -59,6 +60,7 @@ export class EditSectorComponent implements OnInit {
 
   updateSector(sectorItem: Sector) {
     this.ionLoader.showLoader();
+    console.log(sectorItem);
     this.sectorService.updateSector(sectorItem).subscribe(
       () => {
         this.toastService.presentToastWithOptions('UPDATE CONFIRMATION',

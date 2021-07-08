@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthorizationService } from '../../services/authorization.service';
-import { LoaderService } from '../../../shared/services/loader.service';
-import { LoginModel } from '../../models/login.model';
+import { LoaderService } from '../../shared/services/loader.service';
+import { LoginModel } from '../models/login.model';
+import { AuthorizationService } from '../services/authorization.service';
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  templateUrl: './register.page.html',
+  styleUrls: ['./register.page.scss'],
 })
-export class RegisterComponent {
+export class RegisterPage {
   registerForm: FormGroup;
   confirmCode = false;
   error = '';

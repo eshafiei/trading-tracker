@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoaderService } from '../../../shared/services/loader.service';
-import { AuthorizationService } from '../../services/authorization.service';
+import { LoaderService } from '../../shared/services/loader.service';
+import { AuthorizationService } from '../services/authorization.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
 })
-export class LoginComponent{
+export class LoginPage {
   public loginForm: FormGroup;
   error = '';
 

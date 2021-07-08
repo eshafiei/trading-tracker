@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IonSelect } from '@ionic/angular';
-import { AssetType } from '../../models/asset-type.enum';
-import { Sector } from '../../models/sector.model';
+import { AssetType } from '../../../../sectors/enums/asset-type.enum';
+import { Sector } from '../../../../sectors/models/sector.model';
 
 @Component({
   selector: 'app-sector-form',
@@ -22,7 +22,8 @@ export class SectorFormComponent implements OnInit, OnChanges {
         sectorId: [''],
         sectorName: ['', Validators.required],
         sectorType: [0, [Validators.required]],
-        active: [true, [Validators.required]]
+        active: [true, [Validators.required]],
+        userId: ['']
       });
     }
 
