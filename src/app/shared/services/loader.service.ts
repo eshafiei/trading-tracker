@@ -9,8 +9,8 @@ export class LoaderService {
   constructor(public loadingController: LoadingController) { }
 
   // Show the loader for infinite time
-  async showLoader() {
-    await this.loadingController.create({
+  showLoader() {
+    this.loadingController.create({
       message: 'Please wait...'
     }).then((res) => {
       res.present();
@@ -18,7 +18,7 @@ export class LoaderService {
   }
 
   // Hide the loader if already created otherwise return error
-  async hideLoader() {
-    await this.loadingController.dismiss();
+  hideLoader() {
+    this.loadingController.dismiss();
   }
 }

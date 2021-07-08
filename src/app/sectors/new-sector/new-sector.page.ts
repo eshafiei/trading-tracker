@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { UUID } from 'angular2-uuid';
 import { Router } from '@angular/router';
-import { LoaderService } from '../../../shared/services/loader.service';
-import { ToastService } from '../../../shared/services/toast.service';
-import { Sector } from '../../models/sector.model';
-import { SectorsService } from '../../sectors.service';
-import { MessageService } from '../../../shared/services/message.service';
-import { AppState } from '../../../store/models/app.state';
-import { Store } from '@ngrx/store';
-import { AuthenticatedUser } from '../../../store/models/authenticated-user.model';
+import { UUID } from 'angular2-uuid';
 import { Observable } from 'rxjs';
-import { AuthorizationService } from 'src/app/auth/services/authorization.service';
+import { Store } from '@ngrx/store';
+import { AuthorizationService } from '../../auth/services/authorization.service';
+import { LoaderService } from '../../shared/services/loader.service';
+import { MessageService } from '../../shared/services/message.service';
+import { ToastService } from '../../shared/services/toast.service';
+import { AppState } from '../../store/models/app.state';
+import { AuthenticatedUser } from '../../store/models/authenticated-user.model';
+import { Sector } from '../models/sector.model';
+import { SectorsService } from '../sectors.service';
 
 @Component({
   selector: 'app-new-sector',
-  templateUrl: './new-sector.component.html',
-  styleUrls: ['./new-sector.component.scss'],
+  templateUrl: './new-sector.page.html',
+  styleUrls: ['./new-sector.page.scss'],
 })
-export class NewSectorComponent implements OnInit {
+export class NewSectorPage implements OnInit {
   sectorData: Sector;
   isEdit: boolean;
   authenticatedUser: Observable<AuthenticatedUser[]>;
