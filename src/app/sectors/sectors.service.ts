@@ -10,7 +10,7 @@ export class SectorsService {
 
   sectorsUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sectors';
   sectorUrl = 'https://eouf4erho8.execute-api.us-east-1.amazonaws.com/prod/sector';
-  //headers = new HttpHeaders().set('Content-Type', 'application/json');
+  headers = new HttpHeaders().set('Content-Type', 'application/json');
   payload: any;
 
   constructor(private http: HttpClient) {
@@ -30,7 +30,6 @@ export class SectorsService {
     this.payload = {
       sectorId: sector.sectorId,
       sectorName: sector.sectorName,
-      sectorType: sector.sectorType,
       active: sector.active,
       userId: sector.userId
     };
@@ -41,7 +40,6 @@ export class SectorsService {
     this.payload = {
       sectorId: sector.sectorId,
       sectorName: sector.sectorName,
-      sectorType: sector.sectorType,
       active: sector.active,
       userId: sector.userId
     };
@@ -51,5 +49,12 @@ export class SectorsService {
   deleteSector(sectorId: string) {
     this.payload = {body: {sectorId}};
     return this.http.delete(this.sectorUrl, this.payload);
+  }
+
+  getSectorsDropDown(userId: string): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('userId', userId);
+    params = params.append('action', 'getSectorChoices');
+    return this.http.get(this.sectorsUrl, {params});
   }
 }

@@ -17,9 +17,22 @@
           <ion-datetime placeholder="Select Date" displayFormat="DD-MMM-YYYY" formControlName="purchaseDate"></ion-datetime>
         </ion-item>
         <ion-item class="ion-margin">
+          <ion-label position="floating">Sector</ion-label>
+          <ion-select placeholder="Select One" formControlName="sectorId" #sectorElement (ionChange)="sectorChange($event, sectorElement)"
+            value="f.sectorId.value">
+            <ion-select-option *ngFor="let sector of sectorChoices" [value]="sector.sectorId">{{sector.sectorName}}</ion-select-option>
+          </ion-select>
+          <ion-note *ngIf="(f.sectorId.errors && !f.sectorId.errors.required) && (f.sectorId.dirty || f.sectorId.touched)" color="danger">
+            Sector is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.sectorId?.hasError('required')) && (f.sectorId.dirty || f.sectorId.touched)" color="danger">
+            Sector is required!
+          </ion-note>
+        </ion-item>
+        <ion-item class="ion-margin">
           <ion-label position="floating">Asset Type</ion-label>
           <ion-select placeholder="Select One" formControlName="assetType" #assetTypeElement
-            (ionChange)="sectorTypeChange($event, assetTypeElement)" selectedText="{{assetTypes[f.assetType.value]}}"
+            (ionChange)="sectorChange($event, assetTypeElement)" selectedText="{{assetTypes[f.assetType.value]}}"
             value="f.assetType.value">
             <ion-select-option *ngFor="let type of assetTypeItems" [value]="type">{{assetTypes[type]}}</ion-select-option>
           </ion-select>

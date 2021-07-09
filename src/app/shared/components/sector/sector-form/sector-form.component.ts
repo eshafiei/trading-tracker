@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IonSelect } from '@ionic/angular';
-import { AssetType } from '../../../../sectors/enums/asset-type.enum';
 import { Sector } from '../../../../sectors/models/sector.model';
 
 @Component({
@@ -14,22 +12,17 @@ export class SectorFormComponent implements OnInit, OnChanges {
   @Input() sectorFormData: Sector;
   @Output() itemEvent = new EventEmitter<Sector>();
   public sectorForm: FormGroup;
-  assetTypes: typeof AssetType = AssetType;
-  assetTypeItems: string[] = [];
 
   constructor(private fb: FormBuilder) {
       this.sectorForm = this.fb.group({
         sectorId: [''],
         sectorName: ['', Validators.required],
-        sectorType: [0, [Validators.required]],
         active: [true, [Validators.required]],
         userId: ['']
       });
     }
 
-  ngOnInit() {
-    this.assetTypeItems = Object.keys(this.assetTypes).filter(k => !isNaN(Number(k)));
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     const sectorData = changes.sectorFormData;
@@ -40,11 +33,6 @@ export class SectorFormComponent implements OnInit, OnChanges {
 
   get f() {
     return this.sectorForm.controls;
-  }
-
-  sectorTypeChange(event: any, element: IonSelect) {
-    element.value = event.detail.value;
-    element.selectedText = this.assetTypes[event.detail.value];
   }
 
   save() {

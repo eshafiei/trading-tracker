@@ -24,20 +24,6 @@
           </ion-note>
         </ion-item>
         <ion-item class="ion-margin">
-          <ion-label position="floating">Type</ion-label>
-          <ion-select placeholder="Select One" formControlName="sectorType" #sectorTypeElement
-            (ionChange)="sectorTypeChange($event, sectorTypeElement)" selectedText="{{assetTypes[f.sectorType.value]}}"
-            value="f.sectorType.value">
-            <ion-select-option *ngFor="let type of assetTypeItems" [value]="type">{{assetTypes[type]}}</ion-select-option>
-          </ion-select>
-          <ion-note *ngIf="(f.sectorType.errors && !f.sectorType.errors.required) && (f.sectorType.dirty || f.sectorType.touched)" color="danger">
-            Sector Type is invalid!
-          </ion-note>
-          <ion-note *ngIf="(f.sectorType?.hasError('required')) && (f.sectorType.dirty || f.sectorType.touched)" color="danger">
-            Sector Type is required!
-          </ion-note>
-        </ion-item>
-        <ion-item class="ion-margin">
           <ion-label>Active</ion-label>
           <ion-toggle color="success" formControlName="active" slot="end"></ion-toggle>
         </ion-item>

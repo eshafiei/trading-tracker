@@ -4,10 +4,13 @@ import { IonSelect } from '@ionic/angular';
 import { UUID } from 'angular2-uuid';
 import { AuthorizationService } from '../../auth/services/authorization.service';
 import { ToastService } from '../../shared/services/toast.service';
-import { AssetType } from '../../sectors/enums/asset-type.enum';
 import { AssetsService } from '../assets.service';
 import { MessageService } from '../../shared/services/message.service';
 import { Router } from '@angular/router';
+import { AssetType } from '../enums/asset-type.enum';
+import { SectorsService } from '../../sectors/sectors.service';
+import { Sector } from 'src/app/sectors/models/sector.model';
+import { SectorChoices } from 'src/app/sectors/models/sector-choices.model';
 
 @Component({
   selector: 'app-new-asset',
@@ -19,45 +22,60 @@ export class NewAssetPage implements OnInit {
   isEdit: false;
   assetTypes: typeof AssetType = AssetType;
   assetTypeItems: string[] = [];
+  sectorItems: Sector[] = [];
+  sectorChoices: SectorChoices[] = [];
   private assetId: string;
+  private userId: string;
 
   constructor(private fb: FormBuilder,
     private assetService: AssetsService,
+    private sectorService: SectorsService,
     private auth: AuthorizationService,
     private toastService: ToastService,
     private messageService: MessageService,
     private route: Router) {
     this.assetForm = this.fb.group({
       assetId: [''],
-      assetType: [0, [Validators.required]],
+      assetType: [0, Validators.required],
       assetName: ['', Validators.required],
       quantity: [1, Validators.required],
       cost: [null, Validators.required],
-      purchaseDate: [Date.now, Validators.required],
+      purchaseDate: [new Date().toISOString(), Validators.required],
+      sectorId: ['', Validators.required],
       userId: ['']
     });
    }
 
   ngOnInit() {
+    this.auth.getIdToken().subscribe(res => {
+      this.userId = res.payload.sub;
+    });
     this.assetTypeItems = Object.keys(this.assetTypes).filter(k => !isNaN(Number(k)));
+    this.sectorService.getSectorsDropDown(this.userId).subscribe(
+      (res: any) => this.sectorChoices= res.sectorChoices,
+      (err) => console.log(err)
+    );
   }
 
   get f() {
     return this.assetForm.controls;
   }
 
-  sectorTypeChange(event: any, element: IonSelect) {
+  assetTypeChange(event: any, element: IonSelect) {
     element.value = event.detail.value;
     element.selectedText = this.assetTypes[event.detail.value];
+  }
+
+  sectorChange(event: any, element: IonSelect) {
+    element.value = event.detail.value;
+    element.selectedText = this.sectorItems[event.detail.value].sectorName;
   }
 
   save() {
     const assetItem = this.assetForm.value;
 
     assetItem.assetId = this.generateGUID();
-    this.auth.getIdToken().subscribe(res => {
-      assetItem.userId = res.payload.sub;
-    });
+    assetItem.userId = this.userId;
 
     this.assetService.saveAsset(assetItem).subscribe(
       () => {

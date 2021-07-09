@@ -5,5 +5,6 @@ export interface Asset {
   quantity: number;
   cost: number;
   purchaseDate: Date;
+  sectorId: string;
   userId: string;
 }
