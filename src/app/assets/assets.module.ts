@@ -18,6 +18,7 @@ import { SharedModule } from '../shared/shared.module';
     ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [AssetsPage]
+  declarations: [AssetsPage],
+  providers: []
 })
 export class AssetsPageModule {}

@@ -1,9 +1,66 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>new-asset</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-</ion-content>
+<form [formGroup]="assetForm" (ngSubmit)="save()">
+  <ion-grid>
+    <ion-row>
+      <ion-col size-lg="4" offset-lg="4">
+        <ion-toolbar color="light">
+          <ion-title class="ion-text-center">{{ isEdit ? 'UPDATE ASSET' : 'CREATE ASSET' }}</ion-title>
+          <ion-buttons slot="start">
+            <ion-back-button [defaultHref]="'/assets'" text=''></ion-back-button>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button type="submit" [disabled]="assetForm.invalid" color="primary">
+              <ion-icon name="save" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <ion-item class="ion-margin">
+          <ion-datetime placeholder="Select Date" displayFormat="DD-MMM-YYYY" formControlName="purchaseDate"></ion-datetime>
+        </ion-item>
+        <ion-item class="ion-margin">
+          <ion-label position="floating">Asset Type</ion-label>
+          <ion-select placeholder="Select One" formControlName="assetType" #assetTypeElement
+            (ionChange)="sectorTypeChange($event, assetTypeElement)" selectedText="{{assetTypes[f.assetType.value]}}"
+            value="f.assetType.value">
+            <ion-select-option *ngFor="let type of assetTypeItems" [value]="type">{{assetTypes[type]}}</ion-select-option>
+          </ion-select>
+          <ion-note *ngIf="(f.assetType.errors && !f.assetType.errors.required) && (f.assetType.dirty || f.assetType.touched)" color="danger">
+            Asset Type is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.assetType?.hasError('required')) && (f.assetType.dirty || f.assetType.touched)" color="danger">
+            Asset Type is required!
+          </ion-note>
+        </ion-item>
+        <ion-item class="ion-margin">
+          <ion-label position="floating">Asset Name / Ticker</ion-label>
+          <ion-input type="text" formControlName="assetName"></ion-input>
+          <ion-note *ngIf="(f.assetName.errors && !f.assetName.errors.required) && (f.assetName.dirty || f.assetName.touched)" color="danger">
+            Asset Name is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.assetName.errors && f.assetName.errors.required) && (f.assetName.dirty || f.assetName.touched)" color="danger">
+            Asset Name is required!
+          </ion-note>
+        </ion-item>
+        <ion-item class="ion-margin">
+          <ion-label position="floating">Quantity</ion-label>
+          <ion-input type="number" min="1" formControlName="quantity"></ion-input>
+          <ion-note *ngIf="(f.quantity.errors && !f.quantity.errors.required) && (f.quantity.dirty || f.quantity.touched)" color="danger">
+            Quantity is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.quantity.errors && f.quantity.errors.required) && (f.quantity.dirty || f.quantity.touched)" color="danger">
+            Quantity is required!
+          </ion-note>
+        </ion-item>
+        <ion-item class="ion-margin">
+          <ion-label position="floating">Cost</ion-label>
+          <ion-input type="number" min="0" formControlName="cost"></ion-input>
+          <ion-note *ngIf="(f.cost.errors && !f.cost.errors.required) && (f.cost.dirty || f.cost.touched)" color="danger">
+            Cost is invalid!
+          </ion-note>
+          <ion-note *ngIf="(f.cost.errors && f.cost.errors.required) && (f.cost.dirty || f.cost.touched)" color="danger">
+            Cost is required!
+          </ion-note>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
