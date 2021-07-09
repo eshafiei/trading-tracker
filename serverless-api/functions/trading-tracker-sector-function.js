@@ -7,19 +7,18 @@ const dynamodbTableName = 'sector';
 const healthPath = '/health';
 const sectorPath = '/sector';
 const sectorsPath = '/sectors';
-let origin = 'http://localhost:8100';
+let origin = 'http://trading-tracker.s3-website-us-east-1.amazonaws.com';
 
 exports.handler = async (event) => {
   console.log('Request event: ', event);
   let response;
 
   if (event.headers !== null && event.headers !== undefined && event.headers['origin'] !== undefined) {
+    console.log("Received origin header: " + event.headers.origin);
 
-          console.log("Received origin header: " + event.headers.origin);
-
-          if(event.headers.origin === 'http://trading-tracker.s3-website-us-east-1.amazonaws.com') {
-              origin = event.headers.origin;
-          }
+    if(event.headers.origin === 'https://localhost:8100') {
+        origin = event.headers.origin;
+    }
   } else {
       console.error('No origin header received');
   }
@@ -31,17 +30,25 @@ exports.handler = async (event) => {
     case event.httpMethod === 'GET' && event.path === sectorPath:
       response = await getSector(event.queryStringParameters.sectorId);
       break;
-    case event.httpMethod === 'GET' && event.path === sectorsPath:
-      response = await getSectors();
+    case event.httpMethod === 'GET' && event.path === sectorsPath &&
+        event.queryStringParameters.action === undefined:
+      response = await getSectors(event.queryStringParameters.userId);
+      break;
+    case event.httpMethod === 'GET' && event.path === sectorsPath &&
+        event.queryStringParameters.action === 'getSectorChoices':
+      response = await getSectorChoices(event.queryStringParameters.userId);
       break;
     case event.httpMethod === 'POST' && event.path === sectorPath:
       response = await saveSector(JSON.parse(event.body));
       break;
     case event.httpMethod === 'PATCH' && event.path === sectorPath:
       const requestBody = JSON.parse(event.body);
-      response = await updateSector(requestBody.sectorId, requestBody.updateKey, requestBody.updateValue);
+      response = await modifySector(requestBody.sectorId, requestBody.updateKey, requestBody.updateValue);
       break;
-    case event.httpMethod === 'DELETE' && event.path === sectorsPath:
+    case event.httpMethod === 'PUT' && event.path === sectorPath:
+      response = await updateSector(JSON.parse(event.body));
+      break;
+    case event.httpMethod === 'DELETE' && event.path === sectorPath:
       response = await deleteSector(JSON.parse(event.body).sectorId);
       break;
   }
@@ -63,13 +70,33 @@ async function getSector(sectorId) {
   });
 }
 
-async function getSectors() {
+async function getSectors(userId) {
   const params = {
+    FilterExpression:
+      "contains(userId, :userId)",
+    ExpressionAttributeValues:
+      {":userId": userId},
     TableName: dynamodbTableName
   };
   const allSectors = await scanDynamoRecords(params, []);
   const body = {
     sectors: allSectors
+  };
+  return buildResponse(200, body);
+}
+
+async function getSectorChoices(userId) {
+  const params = {
+    FilterExpression:
+      "contains(userId, :userId)",
+    ExpressionAttributeValues:
+      {":userId": userId},
+    ProjectionExpression: "sectorName, sectorId",
+    TableName: dynamodbTableName
+  };
+  const sectors = await scanDynamoRecords(params, []);
+  const body = {
+    sectorChoices: sectors
   };
   return buildResponse(200, body);
 }
@@ -105,7 +132,7 @@ async function saveSector(requestBody) {
   });
 }
 
-async function updateSector(sectorId, updateKey, updateValue) {
+async function modifySector(sectorId, updateKey, updateValue) {
   const params = {
     TableName: dynamodbTableName,
     Key: {
@@ -119,13 +146,30 @@ async function updateSector(sectorId, updateKey, updateValue) {
   };
   return await dynamodb.update(params).promise().then((response) => {
     const body = {
-      Operation: 'UPDATE',
+      Operation: 'PATCH',
       Message: 'SUCCESS',
       UpdatedAttributes: response
     };
     return buildResponse(200, body);
   }, (error) => {
     console.error('update failed for sector ${sectorId} with error: ', error);
+  });
+}
+
+async function updateSector(requestBody) {
+  const params = {
+    TableName: dynamodbTableName,
+    Item: requestBody
+  };
+  return await dynamodb.put(params).promise().then(() => {
+    const body = {
+      Operation: 'UPDATE',
+      Message: 'SUCCESS',
+      Item: requestBody
+    };
+    return buildResponse(200, body);
+  }, (error) => {
+    console.error('Update sector failed with error: ', error);
   });
 }
 

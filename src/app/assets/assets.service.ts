@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Asset } from './models/asset.model';
 
 @Injectable({
@@ -14,18 +15,17 @@ export class AssetsService {
   constructor(private http: HttpClient) {
   }
 
-  // sectors(userId: string) {
-  //   const params = new HttpParams().set('userId', userId);
-  //   return this.http.get(this.sectorsUrl, {params});
-  // }
+  assets(userId: string) {
+    const params = new HttpParams().set('userId', userId);
+    return this.http.get(this.assetsUrl, {params});
+  }
 
-  // getSector(sectorId: string): Observable<any> {
-  //   const params = new HttpParams().set('sectorId', sectorId);
-  //   return this.http.get(this.sectorUrl, {params});
-  // }
+  getAsset(assetId: string): Observable<any> {
+    const params = new HttpParams().set('sectorId', assetId);
+    return this.http.get(this.assetUrl, {params});
+  }
 
   saveAsset(asset: Asset) {
-    //console.log('save...', asset);
     this.payload = {
       assetId: asset.assetId,
       assetType: asset.assetType,
@@ -33,24 +33,28 @@ export class AssetsService {
       quantity: asset.quantity,
       cost: asset.cost,
       purchaseDate: asset.purchaseDate,
+      sectorId: asset.sectorId,
       userId: asset.userId
     };
     return this.http.post(this.assetUrl, this.payload);
   }
 
-  // updateSector(sector: Sector) {
-  //   this.payload = {
-  //     sectorId: sector.sectorId,
-  //     sectorName: sector.sectorName,
-  //     sectorType: sector.sectorType,
-  //     active: sector.active,
-  //     userId: sector.userId
-  //   };
-  //   return this.http.put(this.sectorUrl, this.payload);
-  // }
+  updateAsset(asset: Asset) {
+    this.payload = {
+      assetId: asset.assetId,
+      assetName: asset.assetName,
+      assetType: asset.assetType,
+      quantity: asset.quantity,
+      cost: asset.cost,
+      purchaseDate: asset.purchaseDate,
+      sectorId: asset.sectorId,
+      userId: asset.userId
+    };
+    return this.http.put(this.assetUrl, this.payload);
+  }
 
-  // deleteSector(sectorId: string) {
-  //   this.payload = {body: {sectorId}};
-  //   return this.http.delete(this.sectorUrl, this.payload);
-  // }
+  deleteSector(assetId: string) {
+    this.payload = {body: {assetId}};
+    return this.http.delete(this.assetUrl, this.payload);
+  }
 }

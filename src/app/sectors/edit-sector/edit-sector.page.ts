@@ -46,7 +46,6 @@ export class EditSectorPage implements OnInit {
             this.sectorData = {
               sectorId: res.sectorId,
               sectorName: res.sectorName,
-              sectorType: res.sectorType,
               active: res.active,
               userId: res.userId
             };

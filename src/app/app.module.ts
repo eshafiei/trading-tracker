@@ -21,8 +21,7 @@ import { httpInterceptorProviders } from './shared/interceptors';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule,
     SharedModule, AuthModule, StoreModule.forRoot({authenticatedUser: authReducer})],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, AuthorizationService, AuthGuardService,
-    httpInterceptorProviders],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, AuthorizationService, AuthGuardService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
