@@ -6,7 +6,7 @@ import { NotFoundPage } from './site/not-found/not-found.page';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'sectors',
+    redirectTo: 'assets',
     pathMatch: 'full'
   },
   {
