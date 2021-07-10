@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-lg="4" offset-lg="4">
+        <ion-card>
+          <ion-toolbar color="light">
+            <ion-title class="ion-text-center">WEEKLY SUMMARY</ion-title>
+          </ion-toolbar>
+        </ion-card>
+        <ion-card color="warning">
+          <ion-datetime placeholder="Select Month" displayFormat="MMM-YYYY" [ngModel]='selectedMonthYear'></ion-datetime>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row *ngFor="let item of weeklySummaryData?.assets">
+      <ion-col size-lg="4" offset-lg="4">
+        <ion-item>{{ item.assetName }}</ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

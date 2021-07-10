@@ -15,7 +15,7 @@ export class AssetsService {
   constructor(private http: HttpClient) {
   }
 
-  assets(userId: string) {
+  getAssets(userId: string) {
     const params = new HttpParams().set('userId', userId);
     return this.http.get(this.assetsUrl, {params});
   }
@@ -53,7 +53,7 @@ export class AssetsService {
     return this.http.put(this.assetUrl, this.payload);
   }
 
-  deleteSector(assetId: string) {
+  deleteAsset(assetId: string) {
     this.payload = {body: {assetId}};
     return this.http.delete(this.assetUrl, this.payload);
   }

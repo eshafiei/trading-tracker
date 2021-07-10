@@ -11,6 +11,7 @@ import { AssetType } from '../enums/asset-type.enum';
 import { SectorsService } from '../../sectors/sectors.service';
 import { Sector } from 'src/app/sectors/models/sector.model';
 import { SectorChoices } from 'src/app/sectors/models/sector-choices.model';
+import { Asset } from '../models/asset.model';
 
 @Component({
   selector: 'app-new-asset',
@@ -72,7 +73,7 @@ export class NewAssetPage implements OnInit {
   }
 
   save() {
-    const assetItem = this.assetForm.value;
+    const assetItem: Asset = this.assetForm.value;
 
     assetItem.assetId = this.generateGUID();
     assetItem.userId = this.userId;

@@ -31,8 +31,14 @@ exports.handler = async (event) => {
     case event.httpMethod === 'GET' && event.path === assetPath:
       response = await getAsset(event.queryStringParameters.assetId);
       break;
-    case event.httpMethod === 'GET' && event.path === assetsPath:
+    case event.httpMethod === 'GET' && event.path === assetsPath &&
+      event.queryStringParameters.startDate === undefined:
       response = await getAssets(event.queryStringParameters.userId);
+      break;
+    case event.httpMethod === 'GET' && event.path === assetsPath &&
+      event.queryStringParameters.startDate !== undefined:
+      response = await getAssetsByDatePeriod(event.queryStringParameters.userId,
+        event.queryStringParameters.startDate, event.queryStringParameters.endDate);
       break;
     case event.httpMethod === 'POST' && event.path === assetPath:
       response = await saveAsset(JSON.parse(event.body));
@@ -77,6 +83,21 @@ async function getAssets(userId) {
   const allAssets = await scanDynamoRecords(params, []);
   const body = {
     assets: allAssets
+  };
+  return buildResponse(200, body);
+}
+
+async function getAssetsByDatePeriod(userId, startDate, endDate) {
+  const params = {
+    FilterExpression:
+      "contains(userId, :userId, purchaseDate, purchaseDate BETWEEN :startDate and :endDate)",
+    ExpressionAttributeValues:
+      {":userId": userId, ":startDate": startDate, ":endDate": endDate },
+    TableName: dynamodbTableName
+  };
+  const assetsByDatePeriod = await scanDynamoRecords(params, []);
+  const body = {
+    assets: assetsByDatePeriod
   };
   return buildResponse(200, body);
 }

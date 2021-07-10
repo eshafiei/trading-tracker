@@ -15,6 +15,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'assets-summary',
+    loadChildren: () => import('./assets-summary/assets-summary.module').then( m => m.AssetsSummaryPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'sectors',
     loadChildren: () => import('./sectors/sectors.module').then( m => m.SectorsPageModule),
     canActivate: [AuthGuard]
