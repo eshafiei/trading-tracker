@@ -53,13 +53,18 @@ export class SideMenuComponent implements OnInit {
         icon: 'cash-outline'
       },
       {
+        name: 'Weekly Summary',
+        url: '/assets-summary',
+        icon: 'calendar-outline'
+      },
+      {
         name: 'My Account',
         url: '',
         icon: 'person-outline',
       },
       {
         name: 'Logout',
-        url: '/',
+        url: '',
         icon: 'log-out-outline',
         action: 'logout'
       }
