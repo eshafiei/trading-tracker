@@ -25,14 +25,15 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-.customToastClass{
+.customToastClass {
   --background:#62a4b4;
   --border-radius:5px;
   --button-color:#e762158f;
   --color:#cecec0;
 }
 
-ion-card {
+ion-card, ion-toolbar {
+  border-radius: 5px;
   ion-title {
     font-size: small;
   }

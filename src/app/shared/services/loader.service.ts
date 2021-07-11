@@ -6,19 +6,27 @@ import { LoadingController } from '@ionic/angular';
 })
 export class LoaderService {
 
+  isLoading = false;
+
   constructor(public loadingController: LoadingController) { }
 
-  // Show the loader for infinite time
-  async showLoader() {
-    await this.loadingController.create({
-      message: 'Please wait...'
-    }).then((res) => {
-     res.present();
+  async present() {
+    this.isLoading = true;
+    return await this.loadingController.create({
+      message: 'Processing your request...'
+      // duration: 5000,
+    }).then(a => {
+      a.present().then(() => {
+        //console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
     });
   }
 
-  // Hide the loader if already created otherwise return error
-  async hideLoader() {
-    await this.loadingController.dismiss();
+  async dismiss() {
+    this.isLoading = false;
+    return await this.loadingController.dismiss();
   }
 }

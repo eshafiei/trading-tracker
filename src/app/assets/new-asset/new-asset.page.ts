@@ -23,7 +23,7 @@ export class NewAssetPage implements OnInit {
   isEdit: false;
   assetTypes: typeof AssetType = AssetType;
   assetTypeItems: string[] = [];
-  sectorItems: Sector[] = [];
+  //sectorItems: Sector[] = [];
   sectorChoices: SectorChoices[] = [];
   private assetId: string;
   private userId: string;
@@ -69,7 +69,7 @@ export class NewAssetPage implements OnInit {
 
   sectorChange(event: any, element: IonSelect) {
     element.value = event.detail.value;
-    element.selectedText = this.sectorItems[event.detail.value].sectorName;
+    element.selectedText = this.sectorChoices[event.detail.value].sectorName;
   }
 
   save() {
