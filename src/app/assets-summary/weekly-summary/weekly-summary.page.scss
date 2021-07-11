@@ -1,0 +1,15 @@
+ion-grid {
+  .row:before { width: 0; }
+
+  .grid-header {
+    background-color: #bfe6f0;
+  }
+}
+
+ion-row {
+  .weekly-grid-col {
+    border: solid 1px grey;
+    flex: 0 15px 0;
+    padding:0;
+  }
+}

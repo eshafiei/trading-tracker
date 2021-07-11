@@ -6,16 +6,15 @@ import { LoaderService } from '../services/loader.service';
 
 @Injectable()
 export class BackendRequestsInterceptor implements HttpInterceptor {
-
-    constructor(private loader: LoaderService) {}
+  loaderToShow: any;
+  constructor(private loaderService: LoaderService) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-      this.loader.showLoader();
+      this.loaderService.present();
       return next.handle(req).pipe(
         finalize(() => {
-          this.loader.hideLoader();
+          this.loaderService.dismiss();
         })
       );
     };
-
 }

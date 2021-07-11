@@ -1,20 +1,38 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="week/1">
-      <ion-icon name="calendar"></ion-icon>
-      <ion-label>Week 1</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="week/2">
-      <ion-icon name="calendar"></ion-icon>
-      <ion-label>Week 2</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="week/3">
-      <ion-icon name="calendar"></ion-icon>
-      <ion-label>Week 3</ion-label>
-    </ion-tab-button>
-    <ion-tab-button tab="week/4">
-      <ion-icon name="calendar"></ion-icon>
-      <ion-label>Week 4</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
+<ion-content>
+  <ion-grid>
+    <ion-row size-lg="6" offset-lg="3">
+      <ion-col size-lg="3" offset-lg="3">
+        <ion-toolbar color="light">
+          <ion-title class="ion-text-left">WEEKLY SUMMARY</ion-title>
+        </ion-toolbar>
+      </ion-col>
+      <ion-col size-lg="3">
+        <ion-toolbar color="warning">
+          <ion-datetime placeholder="Select Month" displayFormat="MMM-YYYY" [ngModel]='selectedMonthYear' (ionChange)="dateChanged($event)"></ion-datetime>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-content class="content-top-offset">
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="week/1">
+        <ion-icon name="calendar"></ion-icon>
+        <ion-label>Week 1</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="week/2">
+        <ion-icon name="calendar"></ion-icon>
+        <ion-label>Week 2</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="week/3">
+        <ion-icon name="calendar"></ion-icon>
+        <ion-label>Week 3</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="week/4">
+        <ion-icon name="calendar"></ion-icon>
+        <ion-label>Week 4</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-content>
