@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Sector } from '../../../../sectors/models/sector.model';
+import { Sector } from '../../sectors/models/sector.model';
 
 @Component({
   selector: 'app-sector-form',

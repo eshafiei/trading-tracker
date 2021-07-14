@@ -1,45 +1,55 @@
-<ion-content>
-  <ion-grid class="ion-margin">
-    <ion-row class="ion-nowrap" size-lg="6" offset-lg="3">
-      <ion-col class="weekly-grid-col ion-text-center grid-header">
-        <ion-note>Asset</ion-note>
-      </ion-col>
-      <ion-col class="weekly-grid-col ion-text-center grid-header">
-        <ion-note>Shares</ion-note>
-      </ion-col>
-      <ion-col class="weekly-grid-col ion-text-center grid-header">
-        <ion-note>Cost</ion-note>
-      </ion-col>
-      <ion-col class="weekly-grid-col ion-text-center grid-header">
-        <ion-note>Current</ion-note>
-      </ion-col>
-      <ion-col class="weekly-grid-col ion-text-center grid-header">
-        <ion-note>Equity</ion-note>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="weeklySummaryData?.assets.length === 0" size-lg="6" offset-lg="3">
-      <ion-col class="weekly-grid-col">
-        <ion-note class="ion-margin">No Data to display!</ion-note>
-      </ion-col>
-    </ion-row>
-    <div *ngIf="weeklySummaryData?.assets.length > 0">
-      <ion-row *ngFor="let item of weeklySummaryData?.assets" class="ion-nowrap" size-lg="6" offset-lg="3">
-        <ion-col class="weekly-grid-col">
-          <ion-note>{{ item.assetName }}</ion-note>
-        </ion-col>
-        <ion-col class="weekly-grid-col ion-text-center">
-          <ion-note>{{ item.quantity }}</ion-note>
-        </ion-col>
-        <ion-col class="weekly-grid-col ion-text-right">
-          <ion-note>{{ item.cost | currency }}</ion-note>
-        </ion-col>
-        <ion-col class="weekly-grid-col ion-text-right">
-          <ion-note>$320.00</ion-note>
-        </ion-col>
-        <ion-col class="weekly-grid-col ion-text-right">
-          <ion-note>{{ (item.cost * item.quantity) | currency }}</ion-note>
+<ion-content class="weekly-summary-content">
+  <div *ngIf="weeklySummaryData?.assets.length > 0">
+    <ion-grid>
+      <ion-row class="ion-margin-top margin-bottom-100">
+        <ion-col size-lg="6" offset-lg="3" class="ion-nowrap">
+          <ion-card *ngFor="let item of weeklySummaryData?.assets">
+            <ion-grid class="ion-margin" >
+              <ion-row size-lg="12">
+                <ion-col size-lg="6">
+                  <ion-row>
+                    <ion-card-subtitle class="ion-text-uppercase">
+                      {{ item.assetName }}
+                    </ion-card-subtitle>
+                  </ion-row>
+                  <ion-row>
+                    <ion-card-subtitle color="success">
+                      <ion-note>Quantity</ion-note><br/>
+                      {{ item.quantity }}
+                    </ion-card-subtitle>
+                  </ion-row>
+                  <ion-row>
+                    <ion-card-subtitle color="medium">
+                      <ion-note>Cost / Share</ion-note>
+                      {{ item.cost | currency }}
+                    </ion-card-subtitle>
+                  </ion-row>
+                </ion-col>
+                <ion-col size-lg="6">
+                  <ion-row>
+                    <ion-card-subtitle color="primary">
+                      <ion-note>Current Price</ion-note>
+                      {{ 520 | currency }}
+                    </ion-card-subtitle>
+                  </ion-row>
+                  <ion-row>
+                    <ion-card-subtitle color="success">
+                      <ion-note>Total Equity</ion-note>
+                      {{ item.cost * item.quantity | currency }}
+                    </ion-card-subtitle>
+                  </ion-row>
+                  <ion-row>
+                    <ion-card-subtitle color="success">
+                      <ion-note>Profit / Loss</ion-note>
+                      {{ item.cost * item.quantity | currency }}
+                    </ion-card-subtitle>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card>
         </ion-col>
       </ion-row>
-    </div>
-  </ion-grid>
+    </ion-grid>
+  </div>
 </ion-content>

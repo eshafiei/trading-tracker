@@ -40,7 +40,7 @@ export class NewAssetPage implements OnInit {
       assetType: [0, Validators.required],
       assetName: ['', Validators.required],
       quantity: [1, Validators.required],
-      cost: [null, Validators.required],
+      cost: [0, Validators.required],
       purchaseDate: [new Date().toISOString(), Validators.required],
       sectorId: ['', Validators.required],
       userId: ['']
