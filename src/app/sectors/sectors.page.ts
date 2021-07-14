@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { AlertController, ViewDidEnter } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { AuthorizationService } from '../auth/services/authorization.service';
-import { LoaderService } from '../shared/services/loader.service';
 import { MessageService } from '../shared/services/message.service';
 import { ToastService } from '../shared/services/toast.service';
 import { Sector } from './models/sector.model';

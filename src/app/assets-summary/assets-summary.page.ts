@@ -9,12 +9,14 @@ import { NavigationService } from '../shared/services/navigation.service';
 })
 export class AssetsSummaryPage implements OnInit {
   selectedMonthYear: string;
+  selectedTab: boolean;
   constructor(private navService: NavigationService,
     private messageService: MessageService) {
   }
 
   ngOnInit() {
     this.selectedMonthYear = new Date().toISOString();
+    this.selectedTab = true;
     this.navService.push('assets-summary/tabs/week/1', { selectedMonth: this.selectedMonthYear });
   }
 

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { NewSectorPageRoutingModule } from './new-sector-routing.module';
 import { NewSectorPage } from './new-sector.page';
-import { SharedModule } from '../../shared/shared.module';
+import { SectorFormModule } from '../../components/sector-form/sector-form.module';
 
 @NgModule({
   imports: [
@@ -12,7 +12,7 @@ import { SharedModule } from '../../shared/shared.module';
     FormsModule,
     IonicModule,
     NewSectorPageRoutingModule,
-    SharedModule
+    SectorFormModule
   ],
   declarations: [NewSectorPage]
 })
