@@ -1,9 +1,2 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>edit-asset</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-</ion-content>
+<app-asset-form [isEdit]="isEdit" [assetFormData]="assetData"
+    (itemEvent)="updateAsset($event)" (deleteEvent)="deleteAsset($event)"></app-asset-form>

@@ -8,7 +8,10 @@ export interface Asset {
   assetName: string;
   quantity: number;
   cost: number;
+  currentPrice?: number;
   purchaseDate: Date;
+  isSold?: boolean;
+  soldPrice?: number;
   sectorId: string;
   userId: string;
 }

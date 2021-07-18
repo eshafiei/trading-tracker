@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
+import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { MessageService } from '../../shared/services/message.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { Sector } from '../models/sector.model';
@@ -21,7 +22,8 @@ export class EditSectorPage implements OnInit {
     private toastService: ToastService,
     private sectorService: SectorsService,
     private route: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private alertController: AlertController
   ){}
 
   ngOnInit() {
@@ -70,5 +72,28 @@ export class EditSectorPage implements OnInit {
       },
       err => console.log(err)
     );
+  }
+
+  deleteSector(sector: Sector) {
+    this.alertController.create({
+      header: 'Delete Confirmation',
+      message: 'Are you sure you want to delete this sector?',
+      buttons: [
+        { text: 'Cancel', role: 'cancel'},
+        { text: 'Delete',
+          handler: () => {
+            this.sectorService.deleteSector(sector.sectorId).subscribe(
+              () => {
+                this.toastService.presentToastWithOptions('REMOVAL NOTIFICATION', `${sector.sectorName} has been deleted!`,
+                  3000, true);
+                  this.messageService.sendMessage('reload');
+                  this.route.navigate(['./sectors']);
+              },
+              err => console.log(err)
+            );
+          }
+        }
+      ]
+    }).then(alertEl => alertEl.present());
   }
 }

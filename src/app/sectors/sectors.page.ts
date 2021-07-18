@@ -18,9 +18,7 @@ export class SectorsPage implements OnInit, ViewDidEnter {
   public sectorList: Observable<Sector[]>;
 
   constructor(private sectorService: SectorsService,
-    private alertController: AlertController,
     private ref: ChangeDetectorRef,
-    private toastService: ToastService,
     private messageService: MessageService,
     private auth: AuthorizationService) { }
 
@@ -48,28 +46,5 @@ export class SectorsPage implements OnInit, ViewDidEnter {
       },
       err => console.log('Error occurred: ' + err.message)
     );
-  }
-
-  deleteSector(sector: Sector) {
-    this.alertController.create({
-      header: 'Delete Confirmation',
-      message: 'Are you sure you want to delete this sector?',
-      buttons: [
-        { text: 'Cancel', role: 'cancel'},
-        { text: 'Delete',
-          handler: () => {
-            this.sectorService.deleteSector(sector.sectorId).subscribe(
-              () => {
-                this.sectors = this.sectors.filter(s => s.sectorId !== sector.sectorId);
-                this.toastService.presentToastWithOptions('REMOVAL NOTIFICATION', `${sector.sectorName} has been deleted!`,
-                  3000, true);
-                this.ref.detectChanges();
-              },
-              err => console.log(err)
-            );
-          }
-        }
-      ]
-    }).then(alertEl => alertEl.present());
   }
 }

@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { EditAssetPageRoutingModule } from './edit-asset-routing.module';
 
 import { EditAssetPage } from './edit-asset.page';
+import { AssetFormModule } from 'src/app/components/asset-form/asset-form/asset-form.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EditAssetPageRoutingModule
+    EditAssetPageRoutingModule,
+    AssetFormModule
   ],
   declarations: [EditAssetPage]
 })

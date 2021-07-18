@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NewAssetPageRoutingModule } from './new-asset-routing.module';
 
 import { NewAssetPage } from './new-asset.page';
+import { AssetFormModule } from 'src/app/components/asset-form/asset-form/asset-form.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { NewAssetPage } from './new-asset.page';
     FormsModule,
     IonicModule,
     NewAssetPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AssetFormModule
   ],
   declarations: [NewAssetPage]
 })

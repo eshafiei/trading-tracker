@@ -7,6 +7,7 @@ import { AssetsPageRoutingModule } from './assets-routing.module';
 
 import { AssetsPage } from './assets.page';
 import { SharedModule } from '../shared/shared.module';
+import { AssetFormModule } from '../components/asset-form/asset-form/asset-form.module';
 
 @NgModule({
   imports: [
