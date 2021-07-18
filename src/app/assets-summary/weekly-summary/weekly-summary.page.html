@@ -1,52 +1,70 @@
 <ion-content class="weekly-summary-content">
   <div *ngIf="weeklySummaryData?.assets.length > 0">
     <ion-grid>
-      <ion-row class="ion-margin-top margin-bottom-100">
+      <ion-row>
         <ion-col size-lg="6" offset-lg="3" class="ion-nowrap">
+          <ion-searchbar placeholder="Search Asset Name" showCancelButton="focus" animated color="primary"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+      <ion-row class="margin-bottom-100">
+        <ion-col size-md="6" offset-md="3" class="ion-nowrap">
           <ion-card *ngFor="let item of weeklySummaryData?.assets">
-            <ion-grid class="ion-margin" >
-              <ion-row size-lg="12">
-                <ion-col size-lg="6">
-                  <ion-row>
-                    <ion-card-subtitle class="ion-text-uppercase">
-                      {{ item.assetName }}
-                    </ion-card-subtitle>
-                  </ion-row>
-                  <ion-row>
-                    <ion-card-subtitle color="success">
-                      <ion-note>Quantity</ion-note><br/>
-                      {{ item.quantity }}
-                    </ion-card-subtitle>
-                  </ion-row>
-                  <ion-row>
-                    <ion-card-subtitle color="medium">
-                      <ion-note>Cost / Share</ion-note>
-                      {{ item.cost | currency }}
-                    </ion-card-subtitle>
-                  </ion-row>
-                </ion-col>
-                <ion-col size-lg="6">
-                  <ion-row>
-                    <ion-card-subtitle color="primary">
-                      <ion-note>Current Price</ion-note>
-                      {{ 520 | currency }}
-                    </ion-card-subtitle>
-                  </ion-row>
-                  <ion-row>
-                    <ion-card-subtitle color="success">
-                      <ion-note>Total Equity</ion-note>
-                      {{ item.cost * item.quantity | currency }}
-                    </ion-card-subtitle>
-                  </ion-row>
-                  <ion-row>
-                    <ion-card-subtitle color="success">
-                      <ion-note>Profit / Loss</ion-note>
-                      {{ item.cost * item.quantity | currency }}
-                    </ion-card-subtitle>
-                  </ion-row>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+            <ion-card-header class="ion-text-center" color="light">
+              <ion-label class="ion-text-uppercase ion-text-bold" color="primary">{{ item.assetName }}</ion-label>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-grid>
+                <ion-row size-md="12">
+                  <ion-col size-md="6">
+                    <ion-list>
+                      <ion-item>
+                        <ion-label>Quantity</ion-label>
+                        <ion-note slot="end" class="ion-text-bold">{{ item.quantity }}</ion-note>
+                      </ion-item>
+                      <ion-item>
+                        <ion-label>Cost / Share</ion-label>
+                        <ion-note slot="end" class="ion-text-bold">{{ item.cost | currency }}</ion-note>
+                      </ion-item>
+                      <ion-item>
+                        <ion-label>Purchase Date</ion-label>
+                        <ion-note slot="end" class="ion-text-bold">{{ item.purchaseDate | date }}</ion-note>
+                      </ion-item>
+                    </ion-list>
+                  </ion-col>
+                  <ion-col size-md="6">
+                    <ion-list>
+                      <ion-item>
+                        <ion-label>Current Price</ion-label>
+                        <ion-note slot="end" class="ion-text-bold">{{ item.currentPrice | currency }}</ion-note>
+                      </ion-item>
+                      <ion-item>
+                        <ion-label>{{ item.isSold ?  'Sold Price' : 'Total Equity'}}</ion-label>
+                        <ion-note slot="end" class="ion-text-bold">
+                          {{ item.isSold ? (item.soldPrice | currency) : (item.cost * item.quantity | currency) }}
+                        </ion-note>
+                      </ion-item>
+                      <ion-item>
+                        <ion-label>Profit / Loss</ion-label>
+                        <ion-note slot="end" class="ion-text-bold">
+                          {{ item.isSold ? ((item.soldPrice - item.cost) * item.quantity | currency) : ((item.currentPrice - item.cost) * item.quantity | currency) }}
+                        </ion-note>
+                      </ion-item>
+                    </ion-list>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-row>
+                      <ion-col>
+                        <ion-button color="danger" expand="block" [disabled]="item.isSold">
+                          {{ item.isSold ? 'SOLD' : 'Mark as sold'}}
+                        </ion-button>
+                      </ion-col>
+                    </ion-row>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
           </ion-card>
         </ion-col>
       </ion-row>

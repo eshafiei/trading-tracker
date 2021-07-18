@@ -11,14 +11,20 @@
               </ion-button>
             </ion-buttons>
           </ion-toolbar>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-lg="6" offset-lg="3">
+        <ion-searchbar placeholder="Search Sectors" showCancelButton="focus" animated color="primary"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-lg="6" offset-lg="3" class="ion-nowrap">
+        <ion-card>
           <ion-item *ngFor="let sector of sectors" [routerLink]="['/', 'sectors', 'edit', sector?.sectorId]" detail>
             <ion-icon name="file-tray-full-outline" color="warning"></ion-icon>
             <ion-label class="ion-margin">{{ sector.sectorName }}</ion-label>
-            <ion-buttons>
-              <ion-button (click)="deleteSector(sector)" color="danger">
-                <ion-icon name="trash-outline" slot="icon-only" size="small"></ion-icon>
-              </ion-button>
-            </ion-buttons>
           </ion-item>
         </ion-card>
       </ion-col>

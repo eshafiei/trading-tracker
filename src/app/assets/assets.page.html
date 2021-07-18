@@ -16,22 +16,17 @@
     </ion-row>
     <ion-row>
       <ion-col size-lg="6" offset-lg="3" class="ion-nowrap">
-        <ion-toolbar>
-          <ion-searchbar placeholder="Search Assets" showCancelButton="focus" animated color="primary"></ion-searchbar>
-        </ion-toolbar>
+        <ion-searchbar placeholder="Search Assets" showCancelButton="focus" animated color="primary"></ion-searchbar>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-lg="6" offset-lg="3" class="ion-nowrap">
-        <ion-item *ngFor="let asset of assets" [routerLink]="['/', 'assets', 'edit', asset?.assetId]" detail>
-          <ion-icon name="file-tray-full-outline" color="warning"></ion-icon>
-          <ion-label class="ion-margin">{{ asset.assetName }}</ion-label>
-          <!-- <ion-buttons>
-            <ion-button (click)="deleteAsset(asset)" color="danger">
-              <ion-icon name="trash-outline" slot="icon-only" size="small"></ion-icon>
-            </ion-button>
-          </ion-buttons> -->
-        </ion-item>
+        <ion-card>
+          <ion-item *ngFor="let asset of assets" [routerLink]="['/', 'assets', 'edit', asset?.assetId]" detail>
+            <ion-icon name="file-tray-full-outline" color="warning"></ion-icon>
+            <ion-label class="ion-margin">{{ asset.assetName }}</ion-label>
+          </ion-item>
+        </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>

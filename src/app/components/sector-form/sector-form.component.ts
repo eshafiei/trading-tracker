@@ -11,6 +11,7 @@ export class SectorFormComponent implements OnInit, OnChanges {
   @Input() isEdit: boolean;
   @Input() sectorFormData: Sector;
   @Output() itemEvent = new EventEmitter<Sector>();
+  @Output() deleteEvent = new EventEmitter<Sector>();
   public sectorForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -37,6 +38,10 @@ export class SectorFormComponent implements OnInit, OnChanges {
 
   save() {
     this.itemEvent.emit(this.sectorForm.value);
+  }
+
+  delete() {
+    this.deleteEvent.emit(this.sectorForm.value);
   }
 
 }

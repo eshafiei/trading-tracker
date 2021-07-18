@@ -21,7 +21,7 @@ export class AssetsService {
   }
 
   getAsset(assetId: string): Observable<any> {
-    const params = new HttpParams().set('sectorId', assetId);
+    const params = new HttpParams().set('assetId', assetId);
     return this.http.get(this.assetUrl, {params});
   }
 

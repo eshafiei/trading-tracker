@@ -1,32 +1,47 @@
 <form [formGroup]="sectorForm" (ngSubmit)="save()">
   <ion-grid>
     <ion-row>
+      <ion-col size-lg="6" offset-lg="3">
+        <ion-card>
+          <ion-toolbar color="light">
+            <ion-title class="ion-text-center">{{ isEdit ? 'UPDATE SECTOR' : 'CREATE SECTOR' }}</ion-title>
+            <ion-buttons slot="start">
+              <ion-back-button [defaultHref]="'/sectors'" text=''></ion-back-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+              <ion-button type="submit" [disabled]="sectorForm.invalid" color="primary">
+                <ion-icon name="save" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-lg="6" offset-lg="3">
+        <div class="ion-margin">
+          <ion-item>
+            <ion-label position="floating">Sector</ion-label>
+            <ion-input type="text" formControlName="sectorName"></ion-input>
+            <ion-note *ngIf="(f.sectorName.errors && !f.sectorName.errors.required) && (f.sectorName.dirty || f.sectorName.touched)" color="danger">
+              Sector Name is invalid!
+            </ion-note>
+            <ion-note *ngIf="(f.sectorName.errors && f.sectorName.errors.required) && (f.sectorName.dirty || f.sectorName.touched)" color="danger">
+              Sector Name is required!
+            </ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>Active</ion-label>
+            <ion-toggle color="success" formControlName="active" slot="end"></ion-toggle>
+          </ion-item>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col size-lg="4" offset-lg="4">
-        <ion-toolbar color="light">
-          <ion-title class="ion-text-center">{{ isEdit ? 'UPDATE SECTOR' : 'CREATE SECTOR' }}</ion-title>
-          <ion-buttons slot="start">
-            <ion-back-button [defaultHref]="'/sectors'" text=''></ion-back-button>
-          </ion-buttons>
-          <ion-buttons slot="end">
-            <ion-button type="submit" [disabled]="sectorForm.invalid" color="primary">
-              <ion-icon name="save" slot="icon-only"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-        <ion-item class="ion-margin">
-          <ion-label position="floating">Sector</ion-label>
-          <ion-input type="text" formControlName="sectorName"></ion-input>
-          <ion-note *ngIf="(f.sectorName.errors && !f.sectorName.errors.required) && (f.sectorName.dirty || f.sectorName.touched)" color="danger">
-            Sector Name is invalid!
-          </ion-note>
-          <ion-note *ngIf="(f.sectorName.errors && f.sectorName.errors.required) && (f.sectorName.dirty || f.sectorName.touched)" color="danger">
-            Sector Name is required!
-          </ion-note>
-        </ion-item>
-        <ion-item class="ion-margin">
-          <ion-label>Active</ion-label>
-          <ion-toggle color="success" formControlName="active" slot="end"></ion-toggle>
-        </ion-item>
+        <ion-button expand="block" color="danger" (click)="delete()">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

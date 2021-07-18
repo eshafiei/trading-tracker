@@ -19,11 +19,11 @@ import { Asset } from '../models/asset.model';
   styleUrls: ['./new-asset.page.scss'],
 })
 export class NewAssetPage implements OnInit {
+  assetData: Asset;
+  isEdit: boolean;
   public assetForm: FormGroup;
-  isEdit: false;
   assetTypes: typeof AssetType = AssetType;
   assetTypeItems: string[] = [];
-  //sectorItems: Sector[] = [];
   sectorChoices: SectorChoices[] = [];
   private assetId: string;
   private userId: string;
@@ -35,16 +35,6 @@ export class NewAssetPage implements OnInit {
     private toastService: ToastService,
     private messageService: MessageService,
     private route: Router) {
-    this.assetForm = this.fb.group({
-      assetId: [''],
-      assetType: [0, Validators.required],
-      assetName: ['', Validators.required],
-      quantity: [1, Validators.required],
-      cost: [0, Validators.required],
-      purchaseDate: [new Date().toISOString(), Validators.required],
-      sectorId: ['', Validators.required],
-      userId: ['']
-    });
    }
 
   ngOnInit() {
@@ -56,6 +46,7 @@ export class NewAssetPage implements OnInit {
       (res: any) => this.sectorChoices= res.sectorChoices,
       (err) => console.log(err)
     );
+    this.isEdit = false;
   }
 
   get f() {
@@ -72,8 +63,7 @@ export class NewAssetPage implements OnInit {
     element.selectedText = this.sectorChoices[event.detail.value].sectorName;
   }
 
-  save() {
-    const assetItem: Asset = this.assetForm.value;
+  saveAsset(assetItem: Asset) {
 
     assetItem.assetId = this.generateGUID();
     assetItem.userId = this.userId;

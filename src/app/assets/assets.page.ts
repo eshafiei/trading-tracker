@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ViewDidEnter } from '@ionic/angular';
 import { AuthorizationService } from '../auth/services/authorization.service';
+import { MessageService } from '../shared/services/message.service';
 import { AssetsService } from './assets.service';
 import { Asset } from './models/asset.model';
 
@@ -9,11 +11,20 @@ import { Asset } from './models/asset.model';
   templateUrl: './assets.page.html',
   styleUrls: ['./assets.page.scss'],
 })
-export class AssetsPage implements OnInit {
+export class AssetsPage implements OnInit, ViewDidEnter {
   assets: Asset[];
   constructor(private assetsService: AssetsService,
     private ref: ChangeDetectorRef,
-    private auth: AuthorizationService) { }
+    private auth: AuthorizationService,
+    private messageService: MessageService) { }
+
+  ionViewDidEnter(): void {
+    this.messageService.receiveMessage().subscribe((m) => {
+      if(m === 'reload') {
+        this.loadData();
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadData();
